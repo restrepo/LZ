@@ -45,6 +45,16 @@ python .claude/skills/doc_to_interactive_html/scripts/build_html.py SOURCE.html 
 English interface and no credit line by default. `SKILL.md` describes the workflow; `assets/source-template.html` is a
 starting point for a new lesson.
 
+### Install in a Claude account
+
+```bash
+python tools/package_skill.py      # → dist/doc-to-interactive-html.zip
+```
+
+Upload the zip in claude.ai under *Settings → Capabilities → Skills → Upload skill* (code execution must be on).
+Account skill names allow only lowercase letters, digits and hyphens, so the packaged skill is named
+`doc-to-interactive-html`.
+
 ### GitHub Pages setup (one time)
 
 *Settings → Pages → Build and deployment*: **Source** = *Deploy from a branch*, **Branch** = `main`, folder **`/docs`** → *Save*.
