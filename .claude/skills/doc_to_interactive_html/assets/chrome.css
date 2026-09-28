@@ -1,5 +1,6 @@
 /* ══ NAVIGATION CHROME FOR THE SINGLE-FILE OUTPUT ════════════════════════
-   Responsive 19:9 stage (#escenario, a size container) with the chrome —
+   Responsive stage (#escenario, a size container) with the same aspect ratio as the
+   canvas (default 19:9; --ratio) and the chrome —
    top bar with brand, section menu and ⛶; ‹ › slide arrows; ↑ ↓ step
    arrows; counter; progress line; optional credit; rotate notice — and,
    inside, the fixed lesson canvas (#lienzo, %%WIDTH%% × %%HEIGHT%%) scaled
@@ -11,8 +12,8 @@ html,body{height:100%;margin:0}
 body{background:var(--lienzo);display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:var(--font-body)}
 #escenario{
   position:relative;
-  width:min(100vw, calc(100vh * 19 / 9)); height:min(100vh, calc(100vw * 9 / 19));
-  width:min(100svw, calc(100svh * 19 / 9)); height:min(100svh, calc(100svw * 9 / 19));
+  width:min(100vw, calc(100vh * %%WIDTH%% / %%HEIGHT%%)); height:min(100vh, calc(100vw * %%HEIGHT%% / %%WIDTH%%));
+  width:min(100svw, calc(100svh * %%WIDTH%% / %%HEIGHT%%)); height:min(100svh, calc(100svw * %%HEIGHT%% / %%WIDTH%%));
   container-type:size; background:var(--papel); color:var(--tinta); overflow:hidden;
   box-shadow:0 0 6vh rgba(0,0,0,.55);
 }

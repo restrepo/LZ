@@ -1,4 +1,4 @@
-/* Scales the fixed lesson canvas to the 19:9 stage, and switches the chrome
+/* Scales the fixed lesson canvas to the stage (same aspect ratio), and switches the chrome
    to light colours on accent-field posters. */
 (function(){
   const esc = document.getElementById('escenario'), lz = document.getElementById('lienzo');

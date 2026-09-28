@@ -32,6 +32,11 @@ python .claude/skills/doc_to_interactive_html/scripts/verify_html.py docs/index.
 
 Commit and push `docs/index.html` to `main` to update the site.
 
+> **Note:** the published `docs/index.html` (16:9, 39 slides, "Journal Club" version) was built from a revised lesson
+> source that is not yet in the repository. Running `lesson/build.py` now rebuilds the older 33-slide lesson from
+> `lesson/source.html` and would overwrite it; add the revised source to `lesson/source.html` first (and build with
+> `--ratio 16:9`).
+
 ## The `doc_to_interactive_html` skill
 
 Claude Code loads the skill automatically when working in this repository (ask, for example, *"turn main.tex into an
@@ -39,7 +44,7 @@ interactive HTML lesson"*). It can also be run by hand:
 
 ```bash
 python .claude/skills/doc_to_interactive_html/scripts/build_html.py SOURCE.html --out OUTPUT.html \
-    [--ds DESIGN_SYSTEM_DIR] [--lang en|es] [--credit "…"] [--brand "…"]
+    [--ratio 16:9] [--ds DESIGN_SYSTEM_DIR] [--lang en|es] [--credit "…"] [--brand "…"]
 ```
 
 English interface and no credit line by default. `SKILL.md` describes the workflow; `assets/source-template.html` is a
