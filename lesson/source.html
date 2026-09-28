@@ -1,0 +1,1263 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<title>Dark matter up to 270 keV · The LZ experiment</title>
+<style>
+:root{
+  --t-rotulo:25px; --t-peq:30px; --t-cuerpo:37px; --t-titulo:70px; --t-portada:132px;
+}
+/* ── Lesson: the LZ dark matter search (canvas 2280 × 1080, units in px) ── */
+section.diapositiva{position:relative}
+section.diapositiva p{margin:0 0 14px}
+section.diapositiva .ceja{font:600 var(--t-rotulo)/1 var(--font-body);text-transform:uppercase;margin:0 0 6px}
+section.diapositiva .ceja .score{float:right;color:var(--tinta2);letter-spacing:.04em}
+section.diapositiva strong{font-weight:700}
+section.diapositiva .sub{color:var(--tinta2);font-size:var(--t-peq)}
+
+/* grids */
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:44px;align-items:start}
+.g2-60{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:44px;align-items:start}
+.g2-40{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:44px;align-items:start}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.pila > * + *{margin-top:18px}
+
+/* boxes */
+.caja{background:var(--panel);border:2px solid var(--linea);border-left:9px solid var(--res);padding:16px 24px}
+.caja.c1{border-left-color:var(--caso1)}
+.caja.c2{border-left-color:var(--caso2)}
+.caja.neutra{border-left-color:var(--borde)}
+.caja h3{font-size:34px;margin:0 0 8px}
+.kf{border:2px solid var(--res);background:var(--res-50);padding:12px 26px;text-align:center;font-size:38px}
+.nota{font-size:var(--t-peq);color:var(--tinta2)}
+ul.lista{margin:0;padding-left:1.1em}
+ul.lista li{margin-bottom:10px}
+ol.leyes{margin:0;padding-left:1.3em}
+ol.leyes li{margin-bottom:12px}
+.chico,.chico p,.chico li{font-size:31px}
+.lista.chico li{margin-bottom:8px}
+
+/* figures */
+.svgbox{background:var(--panel);padding:14px 18px 16px}
+.svghd{font:700 var(--t-rotulo)/1.2 var(--font-body);color:var(--tinta2);margin:0 0 10px;display:flex;justify-content:space-between;gap:20px}
+.svghd .val{color:var(--res);text-transform:none;letter-spacing:0;font-variant-numeric:tabular-nums}
+.fig{display:block;width:100%;height:auto}
+.fig text{font-family:'STIX Two Text',Georgia,serif}
+.foto{display:block;width:auto;max-width:100%;height:auto;max-height:var(--fh,600px);margin:0 auto;object-fit:contain;border:2px solid var(--linea);background:var(--neutro-foto,#fff)}
+figure.fg{margin:0}
+figure.fg figcaption{font-size:23px;line-height:1.35;color:var(--tinta2);margin-top:8px}
+
+/* controls */
+.ctrl{display:grid;grid-template-columns:300px 1fr 190px;align-items:center;gap:18px;margin:8px 0;font-size:var(--t-peq)}
+.ctrl .v{font:600 var(--t-peq)/1 var(--font-body);text-align:right;font-variant-numeric:tabular-nums;color:var(--res)}
+.ctrl input[type=range]{width:100%;height:30px;cursor:pointer}
+.fila-btn{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0}
+.btn{font:600 var(--t-peq)/1 var(--font-body);padding:10px 18px;background:var(--panel);color:var(--tinta);border:2px solid var(--linea);cursor:pointer}
+.btn:hover{background:var(--primario-tinte)}
+.btn.on{border-color:var(--res);color:var(--res);background:var(--res-50)}
+.lectura{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:12px}
+.lectura.l2{grid-template-columns:1fr 1fr}
+.lectura.l3{grid-template-columns:repeat(3,1fr)}
+.lectura div{background:var(--panel);border:2px solid var(--linea);padding:10px 16px;font-size:25px;color:var(--tinta2)}
+.lectura b{display:block;font:700 34px/1.25 var(--font-body);color:var(--tinta);font-variant-numeric:tabular-nums}
+.lectura b.acento{color:var(--res)}
+
+/* table */
+table.tabla{border-collapse:collapse;width:100%;font-size:29px}
+table.tabla th,table.tabla td{border-bottom:2px solid var(--linea);padding:6px 14px;text-align:center}
+table.tabla th{font:700 25px/1.2 var(--font-body);color:var(--tinta2);border-bottom-color:var(--tinta)}
+table.tabla td.izq,table.tabla th.izq{text-align:left}
+
+/* chips with pop-ups */
+.prop{border-bottom:3px dotted var(--res);cursor:help;color:var(--tinta);font-weight:600}
+.prop:hover{background:var(--res-50)}
+.pop-src{display:none}
+.popover{position:absolute;z-index:40;max-width:860px;padding:24px 30px;font-size:30px;line-height:1.45}
+.popover h4{margin:0 0 8px;font:800 28px/1.2 var(--font-heading);color:var(--res)}
+.popover .cerrar{position:absolute;top:8px;right:12px;border:0;background:none;font-size:28px;cursor:pointer;color:var(--tinta2)}
+
+/* practice */
+.pr-item{background:var(--panel);padding:14px 22px;margin-bottom:14px}
+.pr-q{font-weight:600;margin-bottom:10px;font-size:31px}
+.pr-opcs{display:flex;flex-wrap:wrap;gap:12px}
+.pr-opc{font:500 28px/1.2 var(--font-body);padding:10px 18px;background:var(--papel);border:2px solid var(--linea);cursor:pointer;color:var(--tinta)}
+.pr-opc.ok{border-color:var(--ok);background:var(--res-50)}
+.pr-opc.mal{border-color:var(--mal);background:var(--mal-50)}
+.pr-fb{margin-top:8px;font-size:27px;min-height:1.2em}
+.pr-fb.ok{color:var(--res)} .pr-fb.mal{color:var(--mal)}
+.pr-in{font-size:30px;padding:8px 12px;width:200px;border:2px solid var(--linea);background:var(--papel)}
+.pr-btn{font:600 28px/1 var(--font-body);padding:10px 18px;border:2px solid var(--linea);background:var(--papel);cursor:pointer;color:var(--tinta);margin-left:10px}
+.pr-pista{display:none;margin-top:8px;font-size:27px;color:var(--tinta2)}
+.pr-pista.on{display:block}
+
+/* glossary */
+dl.glosa{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px 44px;margin:0}
+dl.glosa div{border-top:2px solid var(--linea);padding-top:8px}
+dl.glosa dt{font:800 31px/1.2 var(--font-heading);color:var(--res);margin-bottom:4px}
+dl.glosa dd{margin:0;font-size:26px;line-height:1.35}
+
+/* cover */
+.portada .pt-fig{width:760px}
+.portada .sub{font-size:36px;max-width:1200px}
+.ayuda{position:absolute;bottom:84px;font-size:22px;color:var(--tinta2)}
+.ayuda kbd{font:600 20px/1 var(--font-body);border:2px solid var(--linea);padding:3px 8px;margin:0 2px;background:var(--panel)}
+
+/* big numbers */
+.cifras{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin:6px 0 26px}
+.cifra{border-top:6px solid var(--res);background:var(--panel);padding:18px 22px}
+.cifra b{display:block;font:800 76px/1 var(--font-heading);color:var(--tinta);letter-spacing:-.02em}
+.cifra span{display:block;font-size:26px;color:var(--tinta2);margin-top:10px;line-height:1.3}
+.cifra.c2{border-top-color:var(--caso2)} .cifra.c1{border-top-color:var(--caso1)} .cifra.n{border-top-color:var(--borde)}
+
+/* significance map */
+#mp-fig rect.celda{cursor:pointer}
+#mp-fig rect.celda:hover{stroke:var(--tinta);stroke-width:3}
+
+/* key idea */
+section.diapositiva > .clave{position:absolute;left:640px;right:170px;bottom:22px;margin:0;font:italic 500 25px/1.2 var(--font-body);color:var(--tinta2);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+section.diapositiva > .clave::before{content:'Key idea · ';font-style:normal;font-weight:700;color:var(--res)}
+</style>
+<body>
+<div id="escenario">
+<span class="marca">LZ · Nuclear recoils up to 270 keV</span>
+<p class="credito">Study material design · W. Alexander Flórez</p>
+
+<!-- ═════════════ §1 · MOTIVATION ═════════════ -->
+<section class="diapositiva portada" data-seccion="Motivation" id="dp-portada" data-label="Dark matter up to 270 keV">
+  <div>
+    <p class="ceja">Particle physics · Direct dark matter detection</p>
+    <h1>Dark matter up to 270 keV</h1>
+    <div class="regla"></div>
+    <p class="sub">The LUX-ZEPLIN (LZ) search in an extended nuclear recoil window: effective theories, a liquid xenon detector, a \(\qty{248}{keV}\) event, and how one decides whether it is a signal.</p>
+    <p class="nota" style="margin-top:28px">Based on: LZ Collaboration, <em>Search for dark matter particle interactions in an extended nuclear recoil energy window with the LUX-ZEPLIN (LZ) experiment</em> (2026).</p>
+  </div>
+  <figure class="pt-fig svgbox" style="margin:0">
+    <div class="svghd"><span>An event in the time projection chamber</span><span class="val" id="hero-lect"></span></div>
+    <div id="hero-fig"></div>
+    <label class="ctrl" style="grid-template-columns:220px 1fr 150px"><span>Height \(z\)</span><input type="range" id="hero-z" min="10" max="135" step="0.5" value="26.4"><span class="v" id="hero-zv"></span></label>
+  </figure>
+  <p class="ayuda"><kbd>→</kbd> next slide &nbsp;·&nbsp; <kbd>↑</kbd><kbd>↓</kbd> steps within the slide &nbsp;·&nbsp; <kbd>space</kbd> everything in order &nbsp;·&nbsp; <kbd>F</kbd> full screen</p>
+</section>
+
+<section class="diapositiva" data-seccion="Motivation" id="dp-mo" data-label="Why WIMPs?">
+  <p class="ceja">§ 1 · Motivation</p>
+  <h2 class="titulo">Dark matter, WIMPs and nuclear recoils</h2>
+  <div class="g2-60">
+    <div class="pila">
+      <div class="caja"><p class="chico" style="margin:0">Galaxy rotation curves, gravitational lensing in colliding clusters and the cosmic microwave background all point to <strong>matter that emits no light</strong> and makes up most of the matter in the Universe.</p></div>
+      <div class="caja frag"><p class="chico" style="margin:0"><span class="prop" data-pop="pop-wimp">WIMPs</span> (weakly interacting massive particles) arise naturally in many theories beyond the Standard Model.</p></div>
+      <div class="caja frag"><p class="chico" style="margin:0"><strong>Direct detection:</strong> a WIMP from the galactic halo hits a xenon nucleus and makes it <em>recoil</em>. What is measured is the energy of that nuclear recoil (NR).</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0">The usual searches (spin-independent, SI, or spin-dependent, SD, interactions) look at recoils \(\lesssim \qty{100}{keV}\). If the coupling depends on the <strong>momentum transfer</strong> \(q\), the spectrum moves to higher energies. That is why LZ extends the window <strong>up to \(\qty{270}{keV}\)</strong>.</p></div>
+    </div>
+    <figure class="svgbox" style="margin:0">
+      <div class="svghd"><span>The collision being searched for</span><span class="val">WIMP + Xe → WIMP + Xe*</span></div>
+      <svg viewBox="0 0 900 600" class="fig" aria-label="Sketch of a WIMP hitting a xenon nucleus">
+        <line x1="40" y1="300" x2="400" y2="300" style="stroke:var(--caso2);stroke-width:6;stroke-dasharray:18 12"/>
+        <polygon points="400,300 372,286 372,314" style="fill:var(--caso2)"/>
+        <text x="60" y="270" font-size="34" style="fill:var(--caso2)">χ (WIMP)</text>
+        <circle cx="450" cy="300" r="62" style="fill:var(--res-50);stroke:var(--res);stroke-width:4"/>
+        <text x="450" y="312" font-size="36" text-anchor="middle" style="fill:var(--res)">Xe</text>
+        <g class="frag">
+          <line x1="500" y1="270" x2="820" y2="110" style="stroke:var(--caso2);stroke-width:6;stroke-dasharray:18 12"/>
+          <polygon points="840,100 812,104 824,128" style="fill:var(--caso2)"/>
+          <text x="700" y="100" font-size="30" style="fill:var(--caso2)">χ</text>
+          <line x1="500" y1="340" x2="780" y2="500" style="stroke:var(--res);stroke-width:8"/>
+          <polygon points="800,512 772,510 786,486" style="fill:var(--res)"/>
+          <text x="620" y="520" font-size="30" style="fill:var(--res)">recoiling nucleus</text>
+          <text x="620" y="560" font-size="30" style="fill:var(--res)">of a few keV</text>
+        </g>
+        <g class="frag">
+          <text x="60" y="440" font-size="28" style="fill:var(--tinta2)">momentum transfer</text>
+          <text x="60" y="480" font-size="34" style="fill:var(--tinta)"><tspan font-style="italic">q</tspan> = √(2<tspan font-style="italic">m</tspan><tspan baseline-shift="sub" font-size="70%">N</tspan> <tspan font-style="italic">E</tspan><tspan baseline-shift="sub" font-size="70%">R</tspan>)</text>
+          <text x="60" y="530" font-size="28" style="fill:var(--tinta2)"><tspan font-style="italic">E</tspan><tspan baseline-shift="sub" font-size="70%">R</tspan> = 250 keV  ⇒  <tspan font-style="italic">q</tspan> ≈ 250 MeV/<tspan font-style="italic">c</tspan></text>
+        </g>
+      </svg>
+    </figure>
+  </div>
+  <p class="clave">A WIMP leaves its fingerprint as the recoil energy of a nucleus.</p>
+</section>
+
+<section class="diapositiva" data-seccion="Motivation" id="dp-res" data-label="The result in numbers">
+  <p class="ceja">§ 1 · The result on one slide</p>
+  <h2 class="titulo">What LZ reports</h2>
+  <div class="cifras">
+    <div class="cifra"><b>2.84</b><span>tonne·years of exposure: 220 live days × 4.71 t of fiducial xenon</span></div>
+    <div class="cifra c1"><b>5.4–270</b><span>keV: nuclear recoil window with efficiency &gt; 50 %</span></div>
+    <div class="cifra c2 frag"><b>1</b><span>event consistent with a nuclear recoil of \(248 \pm 23_{\text{stat}} \pm 23_{\text{sys}}\) keV</span></div>
+    <div class="cifra frag"><b>3.4σ / 2.6σ</b><span>maximum local / global significance after the look-elsewhere effect</span></div>
+  </div>
+  <div class="g2">
+    <div class="caja frag"><p class="chico" style="margin:0">616 models are tested: the non-relativistic Lagrangians \(\mathcal{L}_1\)–\(\mathcal{L}_{20}\) (isoscalar \(s\) and isovector \(v\)) and the inelastic operators \(\mathcal{O}_1\), \(\mathcal{O}_4\); after removing degeneracies, 293 distinct spectra remain.</p></div>
+    <div class="caja c2 frag"><p class="chico" style="margin:0">None of the rare backgrounds studied explains the event, but 2.6σ global is <strong>not</strong> a discovery: the upper limits obtained are world-leading for every model tested.</p></div>
+  </div>
+  <p class="clave">A single event gives 3.4σ locally, but only 2.6σ once all models are counted.</p>
+</section>
+
+<!-- ═════════════ §2 · THEORY ═════════════ -->
+<section class="diapositiva" data-seccion="Theory" id="dp-eft" data-label="Non-relativistic effective theory">
+  <p class="ceja">§ 2 · Non-relativistic effective field theory (NREFT)</p>
+  <h2 class="titulo">Beyond SI and SD: fifteen operators</h2>
+  <div class="g2">
+    <div class="pila">
+      <p class="chico">The WIMP–nucleon interaction is treated as a four-particle contact interaction:</p>
+      <div class="kf">\[ \mathcal{L}_{\text{int}} = \mathcal{O}\,\chi\bar{\chi}\,\bar{N}N \]</div>
+      <p class="chico frag">Momentum conservation and Galilean invariance leave four Hermitian quantities:</p>
+      <div class="kf frag">\[ i\,\frac{\vec{q}}{m_N},\qquad \vec{v}^{\perp} \equiv \vec{v} + \frac{\vec{q}}{2\mu},\qquad \vec{S}_{\chi},\qquad \vec{S}_{N} \]</div>
+      <p class="nota frag">\(\vec q\): momentum transfer; \(\mu\): WIMP–nucleon reduced mass; \(\vec v^{\perp}\): relative velocity perpendicular to \(\vec q\); \(\vec S\): spins.</p>
+    </div>
+    <div class="pila">
+      <div class="caja frag"><p class="chico" style="margin:0">Linear combinations up to second order in \(\vec q\) give <strong>15 operators</strong> \(\mathcal{O}_i\). For example \(\mathcal{O}_1 = 1\) (SI) and \(\mathcal{O}_4 = \vec S_\chi\cdot\vec S_N\) (SD). They come from relativistic Lagrangians \(\mathcal{L}_1\)–\(\mathcal{L}_{20}\).</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0"><strong>Inelastic scattering:</strong> the WIMP transitions to a heavier state, with splitting \(\delta\). More kinetic energy is needed, the low-energy part of the spectrum is suppressed and the rate modulates over the year (peaking around June 2).</p></div>
+      <div class="caja c1 frag"><p class="chico" style="margin:0">Examples in the paper: inelastic \(\mathcal{O}^{s}_{1}\) (similar to a <em>Higgsino</em> model) and \(\mathcal{L}^{s}_{10}\), a <strong>magnetic moment</strong> interaction with a broad, double-peaked spectrum.</p></div>
+    </div>
+  </div>
+  <p class="clave">If the coupling grows with q, the recoil spectrum shifts to high energies.</p>
+</section>
+
+<section class="diapositiva compacta" data-seccion="Theory" id="dp-esp" data-label="Recoil spectrum explorer">
+  <p class="ceja">§ 2 · Explorer</p>
+  <h2 class="titulo">Recoil spectrum: mass, \(\delta\) and \(q\) dependence</h2>
+  <div class="g2-60">
+    <figure class="svgbox" style="margin:0">
+      <div class="svghd"><span>Relative differential rate (log scale) · standard halo · Helm form factor</span><span class="val" id="esp-lect"></span></div>
+      <div id="esp-fig"></div>
+    </figure>
+    <div class="pila">
+      <label class="ctrl"><span>Mass \(m_\chi\)</span><input type="range" id="esp-m" min="1" max="3.602" step="0.01" value="3"><span class="v" id="esp-mv"></span></label>
+      <label class="ctrl"><span>Splitting \(\delta\)</span><input type="range" id="esp-d" min="0" max="350" step="5" value="0"><span class="v" id="esp-dv"></span></label>
+      <div class="fila-btn" id="esp-q"><span class="nota" style="margin-right:6px">Coupling ∝</span><button type="button" class="btn on" data-n="0">\(q^{0}\) (SI-like)</button><button type="button" class="btn" data-n="1">\(q^{2}\)</button><button type="button" class="btn" data-n="2">\(q^{4}\)</button></div>
+      <div class="lectura l3"><div>Share of 5.4–270 keV above 55 keV<b id="esp-f55"></b></div><div>\(v_{\min}\) for 248 keV<b id="esp-vmin"></b></div><div>Rate relative to \(\delta = 0\)<b id="esp-rel"></b></div></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0">With \(m_\chi = \qty{1000}{GeV}\), raise \(\delta\): the spectrum loses its low end and becomes almost flat up to 270 keV. The dips come from the xenon nuclear form factor (\(\approx 95\) and \(\approx \qty{280}{keV}\)).</p></div>
+      <p class="nota frag">\(v_{\min} = \dfrac{1}{\sqrt{2m_N E_R}}\left(\dfrac{m_N E_R}{\mu} + \delta\right)\): the minimum WIMP speed that can produce \(E_R\).</p>
+    </div>
+  </div>
+  <p class="clave">δ and the q dependence push the spectrum into the new energy window.</p>
+</section>
+
+<section class="diapositiva" data-seccion="Theory" id="dp-fig1" data-label="Spectra from the paper">
+  <p class="ceja">§ 2 · Figure 1 of the paper</p>
+  <h2 class="titulo">The two illustrative models</h2>
+  <div class="g2-40">
+    <figure class="fg">
+      <img class="foto" style="--fh:690px" src="img/Fig1_combined_recoils.webp" alt="Nuclear recoil spectra for inelastic O1 and L10">
+      <figcaption>Differential rate [events/t/yr/keV] versus true recoil energy. Grey: efficiency &lt; 50 %.</figcaption>
+    </figure>
+    <div class="pila">
+      <div class="caja"><h3>Top · inelastic \(\mathcal{O}^{s}_{1}\), \(m_\chi = \qty{1000}{GeV/c^2}\)</h3><p class="chico" style="margin:0">\(\delta = 0\) (blue) is the elastic SI case, which falls quickly. With \(\delta = 200\) and \(\qty{300}{keV}\) the low-energy recoils disappear: the whole useful spectrum lies above \(\sim\qty{50}{keV}\), exactly where the standard search was not looking.</p></div>
+      <div class="caja c2 frag"><h3>Bottom · elastic \(\mathcal{L}^{s}_{10}\)</h3><p class="chico" style="margin:0">WIMP magnetic moment for 50, 200 and \(\qty{1000}{GeV/c^2}\). Large masses give a broad spectrum with a second maximum near \(\qty{200}{keV}\).</p></div>
+      <p class="nota frag">Unit couplings: \(c_i^{s} = d_i^{s} = 1/m_v^{2}\), with \(m_v = \qty{246.2}{GeV}\) the Higgs vacuum expectation value. Spectra computed with WimPyDD and the Standard Halo Model.</p>
+    </div>
+  </div>
+  <p class="clave">Inelastic and magnetic-moment models live at high energy.</p>
+</section>
+
+<section class="diapositiva compacta" data-seccion="Theory" id="dp-cin" data-label="Collision kinematics">
+  <p class="ceja">§ 2 · Kinematics</p>
+  <h2 class="titulo">How much energy can an elastic collision deposit?</h2>
+  <div class="g2-60">
+    <figure class="svgbox" style="margin:0">
+      <div class="svghd"><span>Maximum recoil energy in xenon versus WIMP mass</span><span class="val" id="cin-lect"></span></div>
+      <div id="cin-fig"></div>
+      <label class="ctrl"><span>Mass \(m_\chi\)</span><input type="range" id="cin-m" min="0" max="4" step="0.01" value="3"><span class="v" id="cin-mv"></span></label>
+      <label class="ctrl"><span>Speed \(v\)</span><input type="range" id="cin-v" min="200" max="800" step="5" value="750"><span class="v" id="cin-vv"></span></label>
+    </figure>
+    <div class="pila">
+      <div class="kf">\[ E_R^{\max} = \frac{2\mu_N^{2} v^{2}}{m_N},\qquad \mu_N = \frac{m_\chi m_N}{m_\chi + m_N} \]</div>
+      <p class="nota">\(m_N \approx \qty{122}{GeV/c^2}\) for \(^{131}\)Xe. The WIMP speed in the lab frame does not exceed \(\sim \qty{800}{km/s}\) (galactic escape speed + Earth's motion).</p>
+      <div class="caja c1 frag"><h3>The same calculation for a neutron</h3>
+        <label class="ctrl" style="grid-template-columns:200px 1fr 170px"><span>\(E_n\)</span><input type="range" id="cin-n" min="0.5" max="20" step="0.1" value="8.3"><span class="v" id="cin-nv"></span></label>
+        <p class="chico" style="margin:0">\(E_R^{\max} = \dfrac{4 m_n m_N}{(m_n+m_N)^2}\,E_n \approx 0.030\,E_n\) &nbsp;⇒&nbsp; <strong id="cin-nr"></strong></p>
+      </div>
+      <p class="nota frag">A \(\qty{250}{keV}\) recoil requires a neutron of at least \(\sim\qty{8}{MeV}\) in a head-on collision; at that energy scattering is strongly forward-peaked and deposits little energy.</p>
+    </div>
+  </div>
+  <p class="clave">Only heavy WIMPs or MeV neutrons can produce 250 keV recoils.</p>
+</section>
+
+<!-- ═════════════ §3 · DETECTOR ═════════════ -->
+<section class="diapositiva" data-seccion="Detector" id="dp-tpc" data-label="The LZ detector">
+  <p class="ceja">§ 3 · The detector</p>
+  <h2 class="titulo">A xenon chamber inside two vetoes</h2>
+  <div class="g2-40">
+    <figure class="svgbox" style="margin:0">
+      <div class="svghd"><span>Detector layers (sketch, not to scale)</span><span class="val">SURF, South Dakota · 1.5 km underground</span></div>
+      <svg viewBox="0 0 900 660" class="fig" aria-label="Sketch of the LZ detector layers">
+        <rect x="20" y="20" width="860" height="620" style="fill:var(--papel);stroke:var(--borde);stroke-width:3"/>
+        <text x="40" y="60" font-size="28" style="fill:var(--tinta2)">ultra-pure water · 229 t</text>
+        <rect x="110" y="90" width="680" height="500" rx="40" style="fill:var(--caso1-50);stroke:var(--caso1);stroke-width:4"/>
+        <text x="130" y="128" font-size="28" style="fill:var(--caso1)">OD: Gd-loaded scintillator · 17 t</text>
+        <rect x="200" y="150" width="500" height="400" rx="30" style="fill:var(--panel);stroke:var(--tinta);stroke-width:4"/>
+        <text x="215" y="182" font-size="24" style="fill:var(--tinta2)">vacuum-insulated cryostat</text>
+        <rect x="235" y="195" width="430" height="330" style="fill:var(--caso2-50);stroke:var(--caso2);stroke-width:3"/>
+        <text x="245" y="222" font-size="24" style="fill:var(--caso2)">Skin: 2 t of LXe</text>
+        <rect x="285" y="235" width="330" height="270" style="fill:var(--res-50);stroke:var(--res);stroke-width:4"/>
+        <g style="fill:var(--res)"><rect x="295" y="243" width="310" height="16"/><rect x="295" y="481" width="310" height="16"/></g>
+        <line x1="290" y1="290" x2="610" y2="290" style="stroke:var(--res);stroke-width:2;stroke-dasharray:8 6"/>
+        <text x="450" y="340" font-size="30" text-anchor="middle" style="fill:var(--res)">TPC</text>
+        <text x="450" y="380" font-size="26" text-anchor="middle" style="fill:var(--res)">7 t of active LXe</text>
+        <text x="450" y="420" font-size="22" text-anchor="middle" style="fill:var(--tinta2)">(4.71 t fiducial)</text>
+        <text x="620" y="252" font-size="20" style="fill:var(--tinta2)">PMT</text>
+        <text x="620" y="494" font-size="20" style="fill:var(--tinta2)">PMT</text>
+      </svg>
+    </figure>
+    <div class="pila">
+      <div class="caja"><p class="chico" style="margin:0"><strong>Dual-phase TPC:</strong> 7 t of active liquid xenon with photomultiplier tubes (PMTs) at top and bottom. Cathode, gate and anode set up the fields that <em>drift</em> electrons to the surface and extract them into the gas.</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0"><strong>Skin:</strong> 2 t of LXe around the TPC, read out by scintillation. It identifies \(\gamma\)-rays entering or leaving.</p></div>
+      <div class="caja c1 frag"><p class="chico" style="margin:0"><strong>Outer Detector (OD):</strong> 17 t of gadolinium-loaded liquid scintillator (0.1 %) and 229 t of water. It detects neutrons, \(\gamma\)-rays and muons.</p></div>
+      <div class="caja neutra frag"><p class="chico" style="margin:0">A bottom electrode below the cathode shields the lower PMTs. Between them lies the <span class="prop" data-pop="pop-rfr">reverse field region (RFR)</span>, 13.75 cm deep, from which charge never reaches the surface.</p></div>
+    </div>
+  </div>
+  <p class="clave">The TPC measures; the Skin and OD tag what comes from outside.</p>
+</section>
+
+<section class="diapositiva compacta" data-seccion="Detector" id="dp-s1s2" data-label="S1 and S2 signals">
+  <p class="ceja">§ 3 · Two signals per event</p>
+  <h2 class="titulo">S1, S2 and the energy of an event</h2>
+  <div class="g2">
+    <div class="pila">
+      <div class="caja"><p class="chico" style="margin:0"><span class="prop" data-pop="pop-s1s2">S1</span>: prompt scintillation at the interaction site. <span class="prop" data-pop="pop-s1s2">S2</span>: electroluminescence in the gas, when the extracted electrons are accelerated. The S2 pattern on the top PMTs gives \((x,y)\); the S1→S2 delay gives the depth \(z\).</p></div>
+      <div class="kf frag">\[ E_{ee} = W\left(\frac{S1c}{g_1} + \frac{S2c}{g_2}\right),\quad W = \qty{13.7}{eV} \]</div>
+      <p class="chico frag">LZ gains: \(g_1 = 0.110 \pm 0.002\) phd/photon and \(g_2 = 34.5 \pm 1.1\) phd/electron (phd = photons detected). S1c and S2c are position-corrected.</p>
+      <div class="caja c2 frag"><p class="chico" style="margin:0">The S2/S1 ratio separates <strong>electron recoils (ER)</strong> from \(\gamma\)-rays and \(\beta\) decays from <strong>nuclear recoils (NR)</strong> from WIMPs, neutrons and neutrinos: an NR leaves less charge per photon.</p></div>
+    </div>
+    <figure class="svgbox" style="margin:0">
+      <div class="svghd"><span>Combined energy calculator</span><span class="val" id="ss-lect"></span></div>
+      <label class="ctrl"><span>\(S1c\) (phd)</span><input type="range" id="ss-s1" min="3" max="600" step="0.1" value="120"><span class="v" id="ss-s1v"></span></label>
+      <label class="ctrl"><span>\(\log_{10}(S2c/\text{phd})\)</span><input type="range" id="ss-s2" min="2.75" max="4.15" step="0.01" value="3.8"><span class="v" id="ss-s2v"></span></label>
+      <div class="fila-btn"><button type="button" class="btn" id="ss-evt">Event of interest (540.1 phd; 9268 phd)</button></div>
+      <div id="ss-fig"></div>
+      <div class="lectura l3"><div>Photons \(n_\gamma\)<b id="ss-ng"></b></div><div>Electrons \(n_e\)<b id="ss-ne"></b></div><div>Energy \(E_{ee}\)<b class="acento" id="ss-e"></b></div></div>
+      <p class="nota" style="margin-top:10px" id="ss-nota"></p>
+    </figure>
+  </div>
+  <p class="clave">Light and charge together give the energy; their ratio tells ER from NR.</p>
+</section>
+
+<section class="diapositiva" data-seccion="Detector" id="dp-cal" data-label="Calibrations">
+  <p class="ceja">§ 3 · Calibrations</p>
+  <h2 class="titulo">ER and NR bands measured with known sources</h2>
+  <div class="g2-60">
+    <figure class="fg">
+      <img class="foto" style="--fh:700px" src="img/Fig2_Calibrations.webp" alt="Calibration events in the S1c versus log10 S2c plane">
+      <figcaption>Tritium and \(^{14}\)C (light blue), \(^{212}\)Pb (green), D-D neutrons (orange) and AmBe (purple). Lines: mean and 10–90 % percentiles of the ER (dark blue) and NR (red) bands from NEST. Grey: contours of constant energy; dashed: the WIMP search region (WS ROI).</figcaption>
+    </figure>
+    <div class="pila">
+      <div class="caja"><p class="chico" style="margin:0"><strong>ER:</strong> in situ \(\beta\) decays of tritium and \(^{14}\)C (injected as methane) and of \(^{212}\)Pb (after \(^{220}\)Rn injections).</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0"><strong>NR:</strong> neutrons from deuterium–deuterium fusion (0–74 keV NRs) and from AmBe (\(\alpha\),n) reactions (<strong>0–330 keV</strong>). AmBe is what makes it possible to calibrate the new window.</p></div>
+      <div class="caja c1 frag"><p class="chico" style="margin:0">The <span class="prop" data-pop="pop-nest">NEST v2.4.5</span> simulator is tuned to these bands and provides the detector response for every background and signal.</p></div>
+    </div>
+  </div>
+  <p class="clave">AmBe calibrates nuclear recoils up to 330 keV.</p>
+</section>
+
+<section class="diapositiva compacta" data-seccion="Detector" id="dp-nest" data-label="NEST model for NR">
+  <p class="ceja">§ 3 · Supplemental Material · Response model</p>
+  <h2 class="titulo">A break in the NR charge-yield power law</h2>
+  <div class="g2-60">
+    <figure class="svgbox" style="margin:0">
+      <div class="svghd"><span>Exponent \(p(E)\) of the NR charge yield in NEST v2.4.5</span><span class="val" id="ne-lect"></span></div>
+      <div id="ne-fig"></div>
+      <label class="ctrl"><span>Energy \(E\)</span><input type="range" id="ne-e" min="0" max="330" step="1" value="248"><span class="v" id="ne-ev"></span></label>
+    </figure>
+    <div class="pila">
+      <p class="chico">D-D (below 75 keV) and AmBe (high energy) preferred different exponents. NEST v2.4.5 uses \(p = 0.5\) below \(E_0\) and</p>
+      <div class="kf">\[ p(E) = 0.5 + a \ln\!\big[1 + b\,(E - E_0)\big] \]</div>
+      <table class="tabla chica frag"><tr><th class="izq">Parameter</th><th>Value</th><th class="izq">Role</th></tr>
+        <tr><td class="izq">\(a\)</td><td>0.0230</td><td class="izq">strength of the suppression</td></tr>
+        <tr><td class="izq">\(b\)</td><td>0.0289 keV⁻¹</td><td class="izq">how it grows with energy</td></tr>
+        <tr><td class="izq">\(E_0\)</td><td>74.7 keV</td><td class="izq">break energy</td></tr></table>
+      <div class="caja c2 frag"><p class="chico" style="margin:0">For ERs, the recombination fluctuations \(\sigma_p\) become the sum of <strong>two skewed Gaussians</strong> in \(x = \log_{10} N_q\): this reproduces the ER band widths across the full range.</p></div>
+    </div>
+  </div>
+  <p class="clave">A single NR model now describes D-D and AmBe together.</p>
+</section>
+
+<!-- ═════════════ §4 · ANALYSIS ═════════════ -->
+<section class="diapositiva compacta" data-seccion="Analysis" id="dp-roi" data-label="Search region and fiducial volume">
+  <p class="ceja">§ 4 · Event selection</p>
+  <h2 class="titulo">Search region and fiducial volume</h2>
+  <div class="g2-40">
+    <figure class="fg">
+      <img class="foto" style="--fh:640px" src="img/Fig3_roi_events_in_fv.webp" alt="Events in the r squared versus z plane">
+      <figcaption>Data in the WS ROI: <em>science</em> (black), <em>prompt veto</em> (orange crosses), <em>delayed veto</em> (blue circles). Star: the event of interest at \((45.9^{2}\,\mathrm{cm^2},\ 26.4\,\mathrm{cm})\). Grey: outside the FV (cathode, wall and gas).</figcaption>
+    </figure>
+    <div class="pila">
+      <table class="tabla chica">
+        <tr><th class="izq">Criterion</th><th class="izq">Value</th></tr>
+        <tr><td class="izq">Data</td><td class="izq">220 live days (27 Mar 2023 – 1 Apr 2024)</td></tr>
+        <tr><td class="izq">S1c</td><td class="izq">3–600 phd (previously: 3–80 phd)</td></tr>
+        <tr><td class="izq">S2c</td><td class="izq">\(10^{2.75}\)–\(10^{4.15}\) phd; S2 &gt; 645 phd</td></tr>
+        <tr class="frag"><td class="izq">Fiducial mass</td><td class="izq">\(4.71 \pm 0.08\) t (14.5 % smaller than before)</td></tr>
+        <tr class="frag"><td class="izq">NR efficiency</td><td class="izq">96 % on average between 14 and 250 keV</td></tr>
+      </table>
+      <div class="caja frag"><p class="chico" style="margin:0">The radial FV boundary depends on depth and azimuth: it requires \(&lt; (1.0 \pm 0.5)\times 10^{-4}\) expected wall events and at least <strong>8 cm</strong> from the true wall, to suppress <span class="prop" data-pop="pop-mssi">MSSI</span> events.</p></div>
+      <p class="nota frag">At the top the FV sits 12.8 cm below the gate; at the bottom, 9.0 cm above the cathode.</p>
+    </div>
+  </div>
+  <p class="clave">A smaller volume in exchange for staying away from the walls and cathode.</p>
+</section>
+
+<section class="diapositiva" data-seccion="Analysis" id="dp-mue" data-label="Three samples and the salt">
+  <p class="ceja">§ 4 · Samples and bias</p>
+  <h2 class="titulo">Three samples by veto, and a failed “salt”</h2>
+  <div class="g3">
+    <div class="caja"><h3>Science</h3><p class="chico" style="margin:0">No signal in either veto. This is where the WIMP is searched for.</p></div>
+    <div class="caja c2 frag"><h3>Prompt veto</h3><p class="chico" style="margin:0">Skin &gt; 2.5 phd within \(\pm\qty{0.25}{\mu s}\) of S1, or OD &gt; 4.5 phd within \(\pm\qty{0.3}{\mu s}\). Tags \(\gamma\)-rays and neutrons.</p></div>
+    <div class="caja c1 frag"><h3>Delayed veto</h3><p class="chico" style="margin:0">Skin &gt; 300 keV or OD &gt; 200 keV up to \(\qty{600}{\mu s}\) later (neutron capture). Tags neutrons.</p></div>
+  </div>
+  <div class="g2" style="margin-top:26px">
+    <div class="caja neutra frag"><p class="chico" style="margin:0">Backgrounds have the same shape in \(\{S1c,\ \log_{10} S2c\}\) in every sample but different rates; the <strong>tagging efficiencies</strong> \(\lambda\) link the three and constrain \(\gamma\)-rays and neutrons. Random coincidences veto 0.01 % (prompt) and 2.86 % (delayed) of events.</p></div>
+    <div class="caja c2 frag"><p class="chico" style="margin:0"><span class="prop" data-pop="pop-sal">Salting</span>: fake events were injected to avoid analyst bias, but their NR model predated AmBe and did not cover the high-energy region well. The 4 salt events fell outside the 90 % NR band. <strong>The analysis is considered non-blind.</strong></p></div>
+  </div>
+  <p class="clave">The vetoes do not discard events: they sort them into samples that are fitted together.</p>
+</section>
+
+<section class="diapositiva" data-seccion="Analysis" id="dp-datos" data-label="The science sample">
+  <p class="ceja">§ 4 · Figure 4 of the paper</p>
+  <h2 class="titulo">1710 events in the science sample</h2>
+  <div class="g2-60">
+    <figure class="fg">
+      <img class="foto" style="--fh:720px" src="img/Fig4_science_sample_wbands.webp" alt="Science sample in the S1c versus log10 S2c plane">
+      <figcaption>Black: science data after all selections. Red and blue: NR and ER bands. Grey lines: constant energy in \(\mathrm{keV_{ee}}\) (ER) and \(\mathrm{keV_{nr}}\) (NR).</figcaption>
+    </figure>
+    <div class="pila">
+      <div class="caja"><p class="chico" style="margin:0">Almost everything falls in the ER band, at the upper left: low-energy \(\beta\) and \(\gamma\) backgrounds.</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0">A lone point at <strong>(540.1 phd, \(10^{3.98}\) phd)</strong>: right in the NR band, between the 200 and 250 keV\(_{nr}\) lines.</p></div>
+      <div class="caja neutra frag"><p class="chico" style="margin:0">The event below \(\log_{10} S2c = 3\) is consistent with an accidental coincidence.</p></div>
+      <p class="nota frag">The features in the ER band above 25 keV\(_{ee}\) come from \(^{125}\)I and \(^{133}\)Xe; they sit slightly below the \(\beta\) band because Auger cascades increase recombination.</p>
+    </div>
+  </div>
+  <p class="clave">At high energy the NR band is almost empty: a single event stands out.</p>
+</section>
+
+<!-- ═════════════ §5 · EVENT ═════════════ -->
+<section class="diapositiva compacta" data-seccion="Event" id="dp-evt" data-label="The event of interest">
+  <p class="ceja">§ 5 · The event of interest</p>
+  <h2 class="titulo">16 June 2023, 21:22:39 UTC</h2>
+  <div class="g2-40">
+    <figure class="fg">
+      <img class="foto" style="--fh:640px" src="img/Fig5_NR_distance_3panels_no_sig.webp" alt="Projection of the distance to the NR median in three S1c ranges">
+      <figcaption>Deviation of \(\log_{10}S2c\) from the NR median, in units of band width, for S1c &lt; 250, 250–500 and &gt; 500 phd. Dashed red: best fit of \(\mathcal{L}^s_{10}\) (1000 GeV). In the bottom panel the total integrated background is \(0.0106 \pm 0.0008\) events.</figcaption>
+    </figure>
+    <div class="pila">
+      <div class="lectura">
+        <div>S1c<b>540.1 phd</b></div><div>S2c<b>9268 phd</b></div><div>NR energy<b class="acento">248 keV</b></div><div>Height<b>26.4 cm</b></div>
+      </div>
+      <div class="lectura frag">
+        <div>Below NR median<b>1.5σ</b></div><div>Below ER median<b class="acento">6.7σ</b></div><div>To the true wall<b>26.9 cm</b></div><div>Uncertainty<b>±23 ±23 keV</b></div>
+      </div>
+      <div class="caja frag"><p class="chico" style="margin:0">The S1 split between the two PMT arrays agrees with the reconstructed \(z\), and the S2 shape with a point-like interaction at that depth.</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0">The S1 pulse shape cannot separate ER from NR at S1c \(\sim 550\) phd: there are few calibration NRs near 250 keV and none within a few centimetres of the event.</p></div>
+    </div>
+  </div>
+  <p class="clave">It looks like a 248 keV nuclear recoil where almost no background is expected.</p>
+</section>
+
+<section class="diapositiva" data-seccion="Event" id="dp-cond" data-label="Conditions and waveform">
+  <p class="ceja">§ 5 · Scrutiny</p>
+  <h2 class="titulo">Did anything unusual happen around the event?</h2>
+  <div class="g2">
+    <div class="pila">
+      <table class="tabla chica">
+        <tr><th class="izq">Before the event</th><th class="izq">What</th></tr>
+        <tr><td class="izq">8 days</td><td class="izq">AmBe NR calibration (one of three)</td></tr>
+        <tr class="frag"><td class="izq">25 min</td><td class="izq">A \(^{57}\)Co source is removed (122 and 136 keV γ-rays, mean free path &lt; 4 mm in LXe), on the opposite side</td></tr>
+        <tr class="frag"><td class="izq">41 min</td><td class="izq">Last muon seen in the OD</td></tr>
+        <tr class="frag"><td class="izq">127 min</td><td class="izq">Last muon seen in the TPC</td></tr>
+      </table>
+      <div class="caja neutra frag"><p class="chico" style="margin:0">No anomalous populations in the calibrations or in the nearby data. The <em>radon tag</em> for \(^{214}\)Pb cannot be applied: the detector was in the mixed-flow state.</p></div>
+    </div>
+    <div class="pila">
+      <div class="caja"><h3>Waveform</h3><ul class="lista chico">
+        <li class="frag">Rise time: less consistent with an RFR MSSI (near the cathode, faster rise times) than with an NR at the reconstructed \(z\).</li>
+        <li class="frag">S2 consistent with a single-site interaction template (α decays at the same position).</li>
+        <li class="frag">S1 pattern across individual PMTs: consistent at 2σ in \(z\) and 1σ in \((x,y)\) with single-site ERs; inconsistent with an RFR MSSI, but indistinguishable from a wall MSSI.</li>
+      </ul></div>
+    </div>
+  </div>
+  <p class="clave">Nothing in the detector or the waveform gives away an artefact.</p>
+</section>
+
+<!-- ═════════════ §6 · BACKGROUNDS ═════════════ -->
+<section class="diapositiva compacta" data-seccion="Backgrounds" id="dp-fon" data-label="Background model">
+  <p class="ceja">§ 6 · Background model · science sample</p>
+  <h2 class="titulo">Expected events in 220 d × 4.71 t</h2>
+  <div class="g2-60">
+    <figure class="svgbox" style="margin:0">
+      <div class="svghd"><span>Number of events (log scale)</span><span class="val" id="fo-lect"></span></div>
+      <div class="fila-btn" id="fo-mod"><button type="button" class="btn on" data-m="0">Expected</button><button type="button" class="btn" data-m="1">Fit with \(\mathcal{L}^s_{10}\) (1000 GeV)</button></div>
+      <div id="fo-fig"></div>
+    </figure>
+    <div class="pila">
+      <div class="caja"><p class="chico" style="margin:0"><strong>ER:</strong> \(\beta\) decays of \(^{214}\)Pb and \(^{212}\)Pb, \(^{85}\)Kr, \(^{136}\)Xe, \(^{124}\)Xe, solar neutrinos, \(\gamma\)-rays from materials, residual tritium and \(^{14}\)C, \(^{125,127}\)Xe. <strong>New</strong> because of the wide window: residual \(^{83\mathrm{m}}\)Kr and \(^{125}\)I (effective half-life of 3.6 d due to purification).</p></div>
+      <div class="caja c1 frag"><p class="chico" style="margin:0"><strong>NR:</strong> atmospheric neutrinos via <span class="prop" data-pop="pop-cevns">CEνNS</span> and (\(\alpha\),n) neutrons from materials, constrained only by the vetoes (tagging efficiency 92 ± 4 %).</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0"><strong>Other:</strong> accidental coincidences of isolated S1 and S2 pulses, and MSSI events. Combined fit: 1713 ± 39 expected versus <strong>1710 observed</strong>.</p></div>
+    </div>
+  </div>
+  <p class="clave">Over a thousand ERs, but near the event only hundredths of an event remain.</p>
+</section>
+
+<section class="diapositiva compacta" data-seccion="Backgrounds" id="dp-mssi" data-label="MSSI events">
+  <p class="ceja">§ 6 · A rare background</p>
+  <h2 class="titulo">MSSI: multiple scintillation, single ionization</h2>
+  <div class="g2">
+    <figure class="svgbox" style="margin:0">
+      <div class="svghd"><span>Hypothesis: the event is an MSSI</span><span class="val" id="ms-lect"></span></div>
+      <div class="fila-btn" id="ms-tipo"><button type="button" class="btn on" data-t="rfr">Second scatter in the RFR</button><button type="button" class="btn" data-t="pared">…at the wall</button></div>
+      <div id="ms-fig"></div>
+    </figure>
+    <div class="pila">
+      <div class="caja"><p class="chico" style="margin:0">An ER deposits energy at two sites; one is in a region with <strong>no charge collection</strong> (the RFR below the cathode, or within a few mm of the wall). The S1s add up; only one S2 survives: the event shifts towards the NR band.</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0">With S2c = 9268 phd, the first scatter would have \(12 \pm 2\) keV and S1c \(\approx 69 \pm 17\) phd. That leaves <strong>≈ 471 phd</strong> of S1 for the second one.</p></div>
+      <div class="caja c1 frag"><p class="chico" style="margin:0">But depositing only 12 keV more than 20 cm from any boundary requires a \(\gamma\)-ray to cross \(&gt; \qty{60}{cm}\) of LXe at a grazing angle without interacting again: <strong>very unlikely</strong>.</p></div>
+      <p class="nota frag">Model: simulation of material radioactivity and \(^{214}\)Pb, with a 100 % rate uncertainty. Validated with 12 sub-regions (5.4 t volume and a high-energy sideband): \(p = 0.7\).</p>
+    </div>
+  </div>
+  <p class="clave">An MSSI could mimic the event, but not 26 cm from the cathode and 27 cm from the wall.</p>
+</section>
+
+<section class="diapositiva" data-seccion="Backgrounds" id="dp-neu" data-label="Neutrons, neutrinos and accidentals">
+  <p class="ceja">§ 6 · The other candidates</p>
+  <h2 class="titulo">Neutrons, neutrinos and accidental coincidences</h2>
+  <div class="g3">
+    <div class="caja c1"><h3>Neutrons</h3><ul class="lista chico">
+      <li>(\(\alpha\),n) from materials: the dominant source; constrained by the vetoes.</li>
+      <li class="frag">Spontaneous fission: high multiplicity ⇒ multiple scatters.</li>
+      <li class="frag">Muons: \(2.1\times10^{9}\) simulated (≈ 1200 years of LZ), no similar deposit. 90 % upper limit: \(&lt; 4.6\times 10^{-4}\) events.</li>
+      <li class="frag">A neutron making a 250 keV recoil would come with several events at lower energy.</li></ul></div>
+    <div class="caja c2 frag"><h3>Atmospheric neutrinos</h3><p class="chico">Well-understood coherent scattering (CEνNS), with an almost exponentially falling spectrum: \(0.11 \pm 0.02\) events in the whole window.</p><p class="chico" style="margin:0">Moreover, at 248 keV the recoil energy is no longer consistent with full coherence.</p></div>
+    <div class="caja frag"><h3>Accidentals</h3><p class="chico">Random pairs of isolated S1 and S2 pulses; normalised with <em>unphysical drift time</em> (UDT) events.</p><p class="chico" style="margin:0">After all cuts the model predicts \(2.4 \pm 0.2\) UDT events and 3 are observed. They dominate at low energy.</p></div>
+  </div>
+  <p class="clave">Every background able to mimic the event would come with many more.</p>
+</section>
+
+<!-- ═════════════ §7 · RESULTS ═════════════ -->
+<section class="diapositiva compacta" data-seccion="Results" id="dp-lee" data-label="Local and global significance">
+  <p class="ceja">§ 7 · Statistics</p>
+  <h2 class="titulo">Local and global significance, and looking elsewhere</h2>
+  <div class="g2-60">
+    <figure class="svgbox" style="margin:0">
+      <div class="svghd"><span>Global significance versus the effective number of independent tests</span><span class="val" id="le-lect"></span></div>
+      <div id="le-fig"></div>
+      <label class="ctrl"><span>Local \(Z_{\text{loc}}\)</span><input type="range" id="le-z" min="2" max="4.5" step="0.05" value="3.4"><span class="v" id="le-zv"></span></label>
+      <label class="ctrl"><span>Tests \(N_{\text{eff}}\)</span><input type="range" id="le-n" min="0" max="3" step="0.01" value="1.15"><span class="v" id="le-nv"></span></label>
+    </figure>
+    <div class="pila">
+      <p class="chico">Profile likelihood ratio (PLR) with a two-sided test statistic; unbinned fit of the three samples simultaneously.</p>
+      <div class="kf frag">\[ p_{\text{glob}} = 1 - (1 - p_{\text{loc}})^{N_{\text{eff}}} \]</div>
+      <div class="caja frag"><p class="chico" style="margin:0">With 293 models, one of them always fits a fluctuation well. LZ generates background-only <strong>toy datasets</strong>, analyses each with all 293 models and records the smallest \(p\): this yields \(p_{\text{glob}}\).</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0">3.4σ local ⇒ 2.6σ global corresponds to about <strong>14 independent tests</strong>: the models are strongly correlated, because they all “see” the same event.</p></div>
+      <div class="lectura l3"><div>\(p_{\text{loc}}\)<b id="le-pl"></b></div><div>\(p_{\text{glob}}\)<b id="le-pg"></b></div><div>\(Z_{\text{glob}}\)<b class="acento" id="le-zg"></b></div></div>
+    </div>
+  </div>
+  <p class="clave">The more models you test, the less surprising a fluctuation becomes.</p>
+</section>
+
+<section class="diapositiva compacta" data-seccion="Results" id="dp-mapa" data-label="Local significance map">
+  <p class="ceja">§ 7 · Supplemental Material · Tables S7 and S8</p>
+  <h2 class="titulo">Which models “see” the event?</h2>
+  <div class="g2-60">
+    <figure class="svgbox" style="margin:0">
+      <div class="svghd"><span id="mp-tit">Local significance (σ) · isoscalar Lagrangians</span><span class="val" id="mp-lect">tap a cell</span></div>
+      <div class="fila-btn" id="mp-modo"><button type="button" class="btn on" data-k="s">\(\mathcal{L}^{s}_{i}\)</button><button type="button" class="btn" data-k="v">\(\mathcal{L}^{v}_{i}\)</button><button type="button" class="btn" data-k="o">Inelastic \(\mathcal{O}_1\), \(\mathcal{O}_4\)</button></div>
+      <div id="mp-fig"></div>
+    </figure>
+    <div class="pila">
+      <div class="caja"><p class="chico" style="margin:0">With masses \(\lesssim \qty{50}{GeV}\) a WIMP cannot produce 248 keV (recall the kinematics): significance 0.</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0">Above \(\sim\qty{100}{GeV}\) many models exceed 3σ. The maximum, <strong>3.4σ</strong>, appears for \(\mathcal{L}_{10}\), \(\mathcal{L}_{16}\), \(\mathcal{O}_1^{v}\) and \(\mathcal{O}_4\) with large \(\delta\).</p></div>
+      <div class="caja c1 frag"><p class="chico" style="margin:0">Isoscalar \(\mathcal{L}_1\) and \(\mathcal{L}_5\) (pure SI, very soft spectrum) do not see it: their spectrum barely reaches 248 keV. For the inelastic models, “–” means the event is not kinematically allowed.</p></div>
+      <p class="nota frag">Each cell: at least 30,000 toys to obtain \(p_0\), converted to one-sided standard deviations.</p>
+    </div>
+  </div>
+  <p class="clave">The event favours heavy WIMPs with hard spectra.</p>
+</section>
+
+<section class="diapositiva" data-seccion="Results" id="dp-lim" data-label="Confidence intervals">
+  <p class="ceja">§ 7 · Figure 6 of the paper</p>
+  <h2 class="titulo">90 % intervals: the lower limit lifts off zero</h2>
+  <div class="g2-40">
+    <figure class="fg">
+      <img class="foto" style="--fh:670px" src="img/Fig6_O1_L10_limit_stacked.webp" alt="Confidence intervals for inelastic O1 and L10">
+      <figcaption>Top: inelastic \(\mathcal{O}^s_1\) at 1000 GeV versus mass splitting. Bottom: \(\mathcal{L}^s_{10}\) versus WIMP mass. Black: interval; dashed: median sensitivity; green/yellow: 68 %/95 % of expected limits.</figcaption>
+    </figure>
+    <div class="pila">
+      <div class="caja"><p class="chico" style="margin:0">Two-sided 90 % confidence intervals are built mass by mass (a raster scan). For \(\mathcal{L}_j\) the coupling \(d_j\) is constrained; for \(\mathcal{O}_i\), the dimensionless form \((c^{N}_i \times m_v^{2})^{2}\).</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0">Because of the event, the <strong>lower limit is non-zero</strong> for \(\delta \gtrsim \qty{100}{keV}\) and for \(m_\chi \gtrsim \qty{100}{GeV}\).</p></div>
+      <div class="caja c1 frag"><p class="chico" style="margin:0">The <strong>upper limits</strong> improve on LUX, PandaX and earlier LZ: they are world-leading for every model tested.</p></div>
+      <p class="nota frag">\(\mathcal{O}^s_1\) can be recast as an SI cross section: \((c_1^{s} m_v^{2})^{2} = \sigma^{N}_{SI}\,\pi m_v^{4}/\mu^{2}\) (Figure S7).</p>
+    </div>
+  </div>
+  <p class="clave">An excess lifts the lower limit, but the upper limits are still world-leading.</p>
+</section>
+
+<section class="diapositiva" data-seccion="Results" id="dp-conc" data-label="Conclusion">
+  <p class="ceja">§ 7 · Conclusion</p>
+  <h2 class="titulo">What remains open</h2>
+  <div class="g2">
+    <ol class="leyes chico">
+      <li>LZ explored nuclear recoils from <strong>5.4 to 270 keV</strong> with 2.84 t·yr, motivated by NREFT and inelastic dark matter.</li>
+      <li class="frag">One event consistent with an elastic NR of \(248 \pm 23 \pm 23\) keV, in a region of very low background.</li>
+      <li class="frag">Global significance <strong>2.6σ</strong>; maximum local <strong>3.4σ</strong>, typically for \(m_\chi &gt; \qty{200}{GeV}\).</li>
+      <li class="frag">None of the rare backgrounds or detector effects studied explains it convincingly.</li>
+    </ol>
+    <div class="pila">
+      <div class="caja c2 frag"><p class="chico" style="margin:0"><strong>What next?</strong> LZ has kept taking data with the same electric field since 1 April 2024. If this is dark matter, more events should appear in the same region; if it is a fluctuation, they will not.</p></div>
+      <div class="caja neutra frag"><p class="chico" style="margin:0">A lesson in method: widening the window forces you to model rare backgrounds (MSSI, \(^{125}\)I, \(^{83\mathrm{m}}\)Kr), calibrate up to 330 keV and correct for the number of models tested.</p></div>
+    </div>
+  </div>
+  <p class="clave">More exposure will tell whether the 248 keV event was the first of many.</p>
+</section>
+
+<!-- ═════════════ §8 · PRACTICE ═════════════ -->
+<section class="diapositiva compacta" data-seccion="Practice" id="dp-prac" data-label="Practice">
+  <p class="ceja">Practice <span class="score">score: <span class="pr-score">0</span> / 5</span></p>
+  <h2 class="titulo">Check what you learned</h2>
+  <div class="g2">
+    <div>
+      <div class="pr-item" data-ok-num="2.84" data-tol="0.03">
+        <div class="pr-q">1. Exposure: 220 days × 4.71 t = how many t·yr?</div>
+        <input class="pr-in" type="text" inputmode="decimal" aria-label="Answer 1"><button type="button" class="pr-btn">Check</button><button type="button" class="pr-btn pr-verpista">Hint</button>
+        <div class="pr-pista">Divide 220 by 365.25 and multiply by 4.71.</div>
+        <div class="pr-fb" data-ok-txt="Yes: 0.602 yr × 4.71 t ≈ 2.84 t·yr." data-mal-txt="Check the conversion from days to years."></div>
+      </div>
+      <div class="pr-item" data-ok-num="8.2" data-tol="0.4">
+        <div class="pr-q">2. Minimum neutron energy (MeV) to give a Xe nucleus (A = 131) a 248 keV recoil.</div>
+        <input class="pr-in" type="text" inputmode="decimal" aria-label="Answer 2"><button type="button" class="pr-btn">Check</button><button type="button" class="pr-btn pr-verpista">Hint</button>
+        <div class="pr-pista">In a head-on collision, \(E_R^{\max} = \frac{4A}{(1+A)^2}E_n \approx 0.030\,E_n\).</div>
+        <div class="pr-fb" data-ok-txt="Correct: 0.248 MeV / 0.0301 ≈ 8.2 MeV." data-mal-txt="Solve E_R = 0.030 E_n for E_n."></div>
+      </div>
+      <div class="pr-item" data-ok-num="471" data-tol="5">
+        <div class="pr-q">3. If the event were an MSSI with S1c = 540.1 phd and the first scatter contributes 69 phd, how much S1c (phd) comes from the second?</div>
+        <input class="pr-in" type="text" inputmode="decimal" aria-label="Answer 3"><button type="button" class="pr-btn">Check</button>
+        <div class="pr-fb" data-ok-txt="Yes: ≈ 471 phd, which would require 77 keV at the wall or ~204 keV in the RFR." data-mal-txt="The S1s of the two scatters add up."></div>
+      </div>
+    </div>
+    <div>
+      <div class="pr-item" data-ok="b">
+        <div class="pr-q">4. Why is the global significance (2.6σ) lower than the local one (3.4σ)?</div>
+        <div class="pr-opcs"><button type="button" class="pr-opc" data-o="a">Because systematic errors were added</button><button type="button" class="pr-opc" data-o="b">Because many models were tested</button><button type="button" class="pr-opc" data-o="c">Because the salt was removed</button></div>
+        <div class="pr-fb" data-ok-txt="Exactly: the look-elsewhere effect corrects for the 293 spectra tested." data-mal-txt="Think about what happens when you search in many places at once."></div>
+      </div>
+      <div class="pr-item" data-ok="c">
+        <div class="pr-q">5. What makes an MSSI look like a nuclear recoil?</div>
+        <div class="pr-opcs"><button type="button" class="pr-opc" data-o="a">It has more S2 than usual</button><button type="button" class="pr-opc" data-o="b">It comes with a veto signal</button><button type="button" class="pr-opc" data-o="c">It adds S1 from a charge-dead site, without its S2</button></div>
+        <div class="pr-fb" data-ok-txt="Correct: more S1 for the same S2 lowers the S2/S1 ratio towards the NR band." data-mal-txt="Remember: in the RFR and next to the wall, charge is not collected."></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="diapositiva compacta" data-seccion="Practice" id="dp-glo" data-label="Glossary">
+  <p class="ceja">Glossary</p>
+  <h2 class="titulo">Terms used in this lesson</h2>
+  <dl class="glosa">
+    <div><dt>WIMP</dt><dd>Weakly interacting massive particle; a dark matter candidate with a mass from GeV to TeV.</dd></div>
+    <div><dt>NREFT</dt><dd>Non-relativistic effective field theory: 15 operators \(\mathcal{O}_i\) built from \(\vec q\), \(\vec v^{\perp}\) and the spins.</dd></div>
+    <div><dt>Inelastic scattering</dt><dd>The WIMP transitions to a state heavier by \(\delta\); low-energy recoils are suppressed.</dd></div>
+    <div><dt>Dual-phase TPC</dt><dd>Time projection chamber with liquid and gaseous xenon that measures S1, S2 and the 3D position.</dd></div>
+    <div><dt>S1 / S2</dt><dd>Prompt scintillation / electroluminescence of the electrons extracted into the gas.</dd></div>
+    <div><dt>ER / NR</dt><dd>Electron recoil (\(\beta\), \(\gamma\) backgrounds) / nuclear recoil (WIMPs, neutrons, neutrinos).</dd></div>
+    <div><dt>Fiducial volume</dt><dd>Inner region (4.71 t) away from walls and electrodes, where the background is lower.</dd></div>
+    <div><dt>MSSI</dt><dd>Multiple scintillation, single ionization: part of the energy lands where charge is not collected.</dd></div>
+    <div><dt>RFR</dt><dd>Reverse field region below the cathode; its charge drifts downwards and is lost.</dd></div>
+    <div><dt>PLR</dt><dd>Profile likelihood ratio: compares the “background” and “background + signal” hypotheses.</dd></div>
+    <div><dt>Look-elsewhere effect</dt><dd>(LEE) Correction of the significance for having tested many hypotheses.</dd></div>
+    <div><dt>Salting</dt><dd>Injecting fake events into the data to avoid analyst bias.</dd></div>
+  </dl>
+</section>
+
+<div class="pop-src" id="pop-wimp" style="display:none"><h4>WIMP</h4><p>A stable, neutral particle with a mass between \(\sim\qty{10}{GeV}\) and several TeV, interacting with matter at roughly the strength of the weak interaction. Produced in the early Universe, its final abundance naturally matches that of dark matter (the “WIMP miracle”).</p></div>
+<div class="pop-src" id="pop-rfr" style="display:none"><h4>Reverse field region</h4><p>Below the cathode the field points the other way: electrons from an interaction there drift towards the bottom grid and produce no S2. A deposit in the RFR contributes only S1.</p></div>
+<div class="pop-src" id="pop-s1s2" style="display:none"><h4>S1 and S2</h4><p>S1: 175 nm photons from the de-excitation of \(\mathrm{Xe}_2^{*}\) dimers (singlet 2–4 ns, triplet 21–28 ns). S2: ionization electrons drift to the surface, are extracted and, accelerated in the gas, produce a large amount of light proportional to their number.</p></div>
+<div class="pop-src" id="pop-nest" style="display:none"><h4>NEST</h4><p><em>Noble Element Simulation Technique</em>: a semi-empirical model of how many photons and electrons an energy deposit produces in noble elements, with their fluctuations. LZ tunes it with its calibrations and uses it, inside BACCARAT/GEANT4, for the signal and background density functions.</p></div>
+<div class="pop-src" id="pop-mssi" style="display:none"><h4>MSSI</h4><p><em>Multiple-scintillation single-ionization</em>: a \(\gamma\)-ray or a decay deposits energy at two sites, one of them without charge collection. The total S1 is larger than the one that goes with the single observed S2, and the event moves towards the NR band.</p></div>
+<div class="pop-src" id="pop-sal" style="display:none"><h4>Salting</h4><p>Artificial signal-like events are mixed into the data and revealed only at the end. That way analysts cannot tune the cuts knowing which events are real.</p></div>
+<div class="pop-src" id="pop-cevns" style="display:none"><h4>CEνNS</h4><p>Coherent elastic neutrino–nucleus scattering: the neutrino interacts with the nucleus as a whole and its cross section grows like \(N^{2}\) (number of neutrons), as long as \(q\) is small compared with the inverse nuclear size.</p></div>
+
+<script>
+/* ═══ UTILIDADES ═══════════════════════════════════════════════════════ */
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const NS = 'http://www.w3.org/2000/svg';
+const num = (x, d) => { const s = Math.abs(x).toFixed(d); return (x < 0 && Number(s) !== 0 ? '−' : '') + s; };
+const activa = el => { const d = el && el.closest('section'); return !!(d && d.hasAttribute('data-deck-active')); };
+const FMATH = "'STIX Two Text',Georgia,serif";
+const FTXT = 'Archivo,system-ui,sans-serif';
+const miles = (x, d) => num(x, d || 0).replace(/^(\d+)/, m => m.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+const supx = e => String(e).replace('-', '⁻').replace(/\d/g, c => '⁰¹²³⁴⁵⁶⁷⁸⁹'[c]);
+function cient(v, c) {
+  if (v === 0) return '0';
+  const e = Math.floor(Math.log10(Math.abs(v)));
+  if (e >= -2 && e <= 3) return num(v, Math.max(0, (c || 2) - Math.max(0, e)));
+  return num(v / Math.pow(10, e), c || 2) + ' × 10' + supx(e);
+}
+
+function nodo(tag, at, padre) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in at) {
+    if (k === 'txt') e.textContent = at[k];
+    else e.setAttribute(k, at[k]);
+  }
+  if (padre) padre.appendChild(e);
+  return e;
+}
+/* Rótulo con variables en cursiva: «*x* (m)» → x en cursiva; _sub subíndice; ^sup superíndice. */
+function rotulo(g, x, y, s, extra) {
+  const t = nodo('text', Object.assign({ x: x, y: y, 'font-size': 28, style: 'fill:var(--tinta2);font-family:' + FMATH }, extra || {}), g);
+  s.split(/(\*[^*]+\*|_[A-Za-z0-9]+|\^[A-Za-z0-9−]+)/).forEach(tr => {
+    if (!tr) return;
+    if (tr[0] === '*') nodo('tspan', { 'font-style': 'italic', txt: tr.slice(1, -1) }, t);
+    else if (tr[0] === '_') { nodo('tspan', { 'baseline-shift': 'sub', 'font-size': '70%', txt: tr.slice(1) }, t); nodo('tspan', { txt: ' ' }, t); }
+    else if (tr[0] === '^') { nodo('tspan', { 'baseline-shift': 'super', 'font-size': '70%', txt: tr.slice(1) }, t); nodo('tspan', { txt: ' ' }, t); }
+    else nodo('tspan', { txt: tr }, t);
+  });
+  return t;
+}
+/* Ejes cartesianos; con o.logx / o.logy los límites y marcas van en log10. */
+function ejes(host, o) {
+  host.innerHTML = '';
+  const W = o.W, H = o.H, m = o.m || { l: 110, r: 24, t: 20, b: 80 };
+  const svg = nodo('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'fig' }, host);
+  const tx = v => o.logx ? Math.log10(v) : v, ty = v => o.logy ? Math.log10(v) : v;
+  const X = v => m.l + (tx(v) - o.x[0]) / (o.x[1] - o.x[0]) * (W - m.l - m.r);
+  const Y = v => H - m.b - (ty(v) - o.y[0]) / (o.y[1] - o.y[0]) * (H - m.t - m.b);
+  const Xr = u => m.l + (u - o.x[0]) / (o.x[1] - o.x[0]) * (W - m.l - m.r);
+  const Yr = u => H - m.b - (u - o.y[0]) / (o.y[1] - o.y[0]) * (H - m.t - m.b);
+  const fondo = nodo('g', {}, svg);
+  (o.xt || []).forEach(u => {
+    nodo('line', { x1: Xr(u), x2: Xr(u), y1: Yr(o.y[0]), y2: Yr(o.y[1]), style: 'stroke:var(--rejilla);stroke-width:2' }, fondo);
+    nodo('text', { x: Xr(u), y: H - m.b + 36, 'text-anchor': 'middle', 'font-size': 26, style: 'fill:var(--tinta2);font-family:' + FMATH, txt: o.fx ? o.fx(u) : num(u, 0) }, fondo);
+  });
+  (o.yt || []).forEach(u => {
+    nodo('line', { x1: Xr(o.x[0]), x2: Xr(o.x[1]), y1: Yr(u), y2: Yr(u), style: 'stroke:var(--rejilla);stroke-width:2' }, fondo);
+    nodo('text', { x: m.l - 12, y: Yr(u) + 9, 'text-anchor': 'end', 'font-size': 26, style: 'fill:var(--tinta2);font-family:' + FMATH, txt: o.fy ? o.fy(u) : num(u, 0) }, fondo);
+  });
+  nodo('line', { x1: Xr(o.x[0]), x2: Xr(o.x[0]), y1: Yr(o.y[0]), y2: Yr(o.y[1]), style: 'stroke:var(--tinta);stroke-width:2.5' }, fondo);
+  nodo('line', { x1: Xr(o.x[0]), x2: Xr(o.x[1]), y1: Yr(o.y[0]), y2: Yr(o.y[0]), style: 'stroke:var(--tinta);stroke-width:2.5' }, fondo);
+  if (o.xl) rotulo(fondo, (m.l + W - m.r) / 2, H - 10, o.xl, { 'text-anchor': 'middle' });
+  if (o.yl) rotulo(fondo, 26, (m.t + H - m.b) / 2, o.yl, { 'text-anchor': 'middle', transform: 'rotate(-90 26 ' + (m.t + H - m.b) / 2 + ')' });
+  const capa = nodo('g', {}, svg);
+  return { svg: svg, X: X, Y: Y, capa: capa, W: W, H: H, m: m, fondo: fondo };
+}
+const potencia = u => '10' + supx(u);
+const polilinea = (A, pts, estilo, g) => nodo('polyline', { points: pts.map(p => A.X(p[0]).toFixed(1) + ',' + A.Y(p[1]).toFixed(1)).join(' '), style: 'fill:none;' + estilo }, g || A.capa);
+function rango(id, alCambiar) {
+  const r = document.getElementById(id);
+  if (!r) return null;
+  r.addEventListener('input', () => alCambiar(+r.value));
+  return r;
+}
+function filaBotones(host, f) {
+  if (!host) return;
+  host.addEventListener('click', ev => {
+    const b = ev.target.closest('button'); if (!b) return;
+    $$('button', host).forEach(o => o.classList.toggle('on', o === b));
+    f(b);
+  });
+}
+/* Funciones especiales */
+function erf(x) {
+  const s = x < 0 ? -1 : 1; x = Math.abs(x);
+  const t = 1 / (1 + 0.3275911 * x);
+  const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+  return s * y;
+}
+/* p de una cola para Z desviaciones estándar (serie de alta precisión en la cola) */
+function pUnaCola(z) {
+  if (z < 0) return 1 - pUnaCola(-z);
+  /* fracción continua de Mills, precisa para z grande; erf para z pequeño */
+  if (z < 3) return 0.5 * (1 - erf(z / Math.SQRT2));
+  let f = z;
+  for (let k = 40; k >= 1; k--) f = z + k / f;
+  return Math.exp(-z * z / 2) / Math.sqrt(2 * Math.PI) / f;
+}
+/* Inversa: Z tal que pUnaCola(Z) = p (bisección) */
+function zDeP(p) {
+  let a = -8, b = 12;
+  for (let k = 0; k < 80; k++) { const c = (a + b) / 2; if (pUnaCola(c) > p) a = c; else b = c; }
+  return (a + b) / 2;
+}
+
+/* ═══ VENTANAS EMERGENTES ══════════════════════════════════════════════ */
+(function () {
+  let pop = null;
+  const cerrar = () => { if (pop) { pop.remove(); pop = null; } };
+  document.addEventListener('click', ev => {
+    const chip = ev.target instanceof Element ? ev.target.closest('.prop') : null;
+    if (!chip) { if (pop && !(ev.target instanceof Element && ev.target.closest('.popover'))) cerrar(); return; }
+    ev.stopPropagation();
+    cerrar();
+    const src = document.getElementById(chip.dataset.pop);
+    const dp = chip.closest('section');
+    if (!src || !dp) return;
+    pop = document.createElement('div');
+    pop.className = 'popover';
+    pop.innerHTML = '<button type="button" class="cerrar" aria-label="Close">×</button>' + src.innerHTML;
+    pop.querySelector('.cerrar').addEventListener('click', cerrar);
+    dp.appendChild(pop);
+    const R = dp.getBoundingClientRect(), c = chip.getBoundingClientRect(), s = R.width / dp.offsetWidth;
+    let x = (c.left - R.left) / s, y = (c.bottom - R.top) / s + 14;
+    x = Math.min(x, dp.offsetWidth - pop.offsetWidth - 40);
+    if (y + pop.offsetHeight > dp.offsetHeight - 40) y = (c.top - R.top) / s - pop.offsetHeight - 14;
+    pop.style.left = Math.max(40, x) + 'px';
+    pop.style.top = Math.max(40, y) + 'px';
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); });
+  document.addEventListener('slidechange', cerrar);
+})();
+
+/* ═══ PRÁCTICA (cualquier diapositiva con .pr-item) ═══════════════════ */
+(function () {
+  $$('section.diapositiva').forEach(dp => {
+    const items = $$('.pr-item', dp);
+    if (!items.length) return;
+    const marcador = $('.pr-score', dp);
+    let aciertos = 0;
+    const fb = (it, ok) => { const f = $('.pr-fb', it); f.className = 'pr-fb ' + (ok ? 'ok' : 'mal'); f.textContent = (ok ? '✓ ' : '✗ ') + (ok ? f.dataset.okTxt : f.dataset.malTxt); };
+    const acierta = it => { if (!it.dataset.hecho) { it.dataset.hecho = '1'; aciertos++; if (marcador) marcador.textContent = aciertos; } };
+    items.forEach(it => {
+      $$('.pr-opc', it).forEach(b => b.addEventListener('click', () => {
+        const ok = b.dataset.o === it.dataset.ok;
+        $$('.pr-opc', it).forEach(o => o.classList.remove('ok', 'mal'));
+        b.classList.add(ok ? 'ok' : 'mal'); fb(it, ok); if (ok) acierta(it);
+      }));
+      const inp = $('.pr-in', it);
+      if (inp) {
+        const revisa = () => {
+          const v = parseFloat(inp.value.replace(/\s/g, '').replace('−', '-'));
+          const ok = Math.abs(v - +it.dataset.okNum) <= +it.dataset.tol;
+          inp.style.borderColor = ok ? 'var(--res)' : 'var(--mal)'; fb(it, ok); if (ok) acierta(it);
+        };
+        inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); revisa(); } });
+        $$('.pr-btn', it).forEach(b => b.addEventListener('click', () => {
+          if (b.classList.contains('pr-verpista')) $('.pr-pista', it).classList.toggle('on'); else revisa();
+        }));
+      }
+    });
+  });
+})();
+
+/* ═══ FÍSICA COMÚN ════════════════════════════════════════════════════ */
+const C_KMS = 299792.458;
+const M_XE = 131 * 0.9315;            /* GeV */
+const M_N = 0.9396;                   /* GeV, neutrón */
+/* Factor de forma de Helm para Xe; q en MeV */
+function helm2(qMeV) {
+  const A = 131, s = 0.9, a = 0.52, c = 1.23 * Math.cbrt(A) - 0.6;
+  const rn = Math.sqrt(c * c + 7 / 3 * Math.PI * Math.PI * a * a - 5 * s * s);
+  const q = qMeV / 197.327, x = q * rn;
+  if (x < 1e-4) return 1;
+  const j1 = (Math.sin(x) - x * Math.cos(x)) / (x * x);
+  const F = 3 * j1 / x * Math.exp(-q * q * s * s / 2);
+  return F * F;
+}
+/* η(v_min) del halo estándar (v0 = 238, vE = 254, vesc = 544 km/s), truncado de forma sencilla */
+function eta(vmin) {
+  const v0 = 238, vE = 254, vmax = 544 + vE;
+  if (vmin >= vmax) return 0;
+  const f = v => (erf((v + vE) / v0) - erf((v - vE) / v0)) / (2 * vE);
+  return Math.max(0, f(vmin) - f(vmax));
+}
+/* v_min (km/s) para retroceso E (keV), masa mχ (GeV), separación δ (keV) */
+function vMin(E, mx, d) {
+  const mN = M_XE * 1e6, mu = mx * M_XE / (mx + M_XE) * 1e6;   /* keV */
+  return (mN * E / mu + d) / Math.sqrt(2 * mN * E) * C_KMS;
+}
+
+/* ═══ PORTADA: un evento en la TPC ═════════════════════════════════════ */
+(function () {
+  const host = document.getElementById('hero-fig');
+  if (!host) return;
+  const W = 740, H = 600;
+  const svg = nodo('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'fig' }, host);
+  /* geometría: gas 60–96, superficie 96, cátodo 400 (z = 0), altura líquida 146 cm */
+  const xL = 150, xR = 590, ySup = 96, yCat = 400, zMax = 146;
+  const Yz = z => yCat - (z / zMax) * (yCat - ySup);
+  nodo('rect', { x: xL - 30, y: 40, width: xR - xL + 60, height: 420, style: 'fill:var(--caso2-50);stroke:var(--caso2);stroke-width:3' }, svg);
+  nodo('rect', { x: xL, y: 60, width: xR - xL, height: ySup - 60, style: 'fill:var(--panel);stroke:none' }, svg);
+  nodo('rect', { x: xL, y: ySup, width: xR - xL, height: 360 - (ySup - 60) + 4, style: 'fill:var(--res-50);stroke:none' }, svg);
+  nodo('rect', { x: xL, y: 60, width: xR - xL, height: 380, style: 'fill:none;stroke:var(--res);stroke-width:3' }, svg);
+  nodo('line', { x1: xL, x2: xR, y1: ySup, y2: ySup, style: 'stroke:var(--res);stroke-width:3' }, svg);
+  nodo('line', { x1: xL, x2: xR, y1: 78, y2: 78, style: 'stroke:var(--tinta2);stroke-width:2;stroke-dasharray:6 5' }, svg);
+  nodo('line', { x1: xL, x2: xR, y1: 104, y2: 104, style: 'stroke:var(--tinta2);stroke-width:2;stroke-dasharray:6 5' }, svg);
+  nodo('line', { x1: xL, x2: xR, y1: yCat, y2: yCat, style: 'stroke:var(--tinta);stroke-width:3;stroke-dasharray:10 5' }, svg);
+  nodo('rect', { x: xL, y: yCat, width: xR - xL, height: 40, style: 'fill:var(--rejilla);stroke:none' }, svg);
+  rotulo(svg, xR + 38, 84, 'anode', { 'font-size': 22 });
+  rotulo(svg, xR + 38, 112, 'gate', { 'font-size': 22 });
+  rotulo(svg, xR + 38, yCat + 8, 'cathode', { 'font-size': 22 });
+  rotulo(svg, xR + 38, yCat + 36, 'RFR', { 'font-size': 22 });
+  rotulo(svg, xL + 10, 88, 'Xe gas', { 'font-size': 20 });
+  rotulo(svg, xL + 10, 390, 'liquid Xe', { 'font-size': 20 });
+  rotulo(svg, xL - 24, 32, 'Skin', { 'font-size': 20, style: 'fill:var(--caso2);font-family:' + FMATH });
+  /* PMT */
+  const pmtA = [], pmtB = [];
+  for (let k = 0; k < 11; k++) {
+    const x = xL + 20 + k * (xR - xL - 40) / 10;
+    pmtA.push(nodo('circle', { cx: x, cy: 50, r: 14, style: 'fill:var(--panel);stroke:var(--tinta2);stroke-width:2' }, svg));
+    pmtB.push(nodo('circle', { cx: x, cy: 450, r: 14, style: 'fill:var(--panel);stroke:var(--tinta2);stroke-width:2' }, svg));
+  }
+  /* WIMP, punto, electrones, S2 */
+  const wimp = nodo('line', { style: 'stroke:var(--caso2);stroke-width:4;stroke-dasharray:12 8' }, svg);
+  const flash = nodo('circle', { r: 0, style: 'fill:var(--res);opacity:0' }, svg);
+  const punto = nodo('circle', { r: 8, style: 'fill:var(--tinta)' }, svg);
+  const elec = []; for (let k = 0; k < 6; k++) elec.push(nodo('circle', { r: 5, style: 'fill:var(--caso1)' }, svg));
+  const s2 = nodo('rect', { y: 62, height: 34, width: 60, style: 'fill:var(--res);opacity:0' }, svg);
+  /* forma de onda */
+  const wy0 = 575, wx0 = 40, wx1 = 700;
+  nodo('line', { x1: wx0, x2: wx1, y1: wy0, y2: wy0, style: 'stroke:var(--tinta);stroke-width:2' }, svg);
+  rotulo(svg, wx1, wy0 + 22, 'time', { 'font-size': 20, 'text-anchor': 'end' });
+  const onda = nodo('polyline', { style: 'fill:none;stroke:var(--res);stroke-width:3' }, svg);
+  const et1 = rotulo(svg, 0, 0, 'S1', { 'font-size': 22 }), et2 = rotulo(svg, 0, 0, 'S2', { 'font-size': 22 });
+  const TMAX = 1100;                  /* µs mostrados */
+  const vd = 0.137;                   /* cm/µs aprox. */
+  let z = 26.4, xP = 430, t = 0, ult = 0;
+  const lect = document.getElementById('hero-lect'), zv = document.getElementById('hero-zv');
+  const deriva = () => (zMax - z) / vd;
+  function escribe() { zv.textContent = num(z, 1) + ' cm'; lect.textContent = 'drift ≈ ' + miles(deriva()) + ' µs'; }
+  rango('hero-z', v => { z = v; t = 0; escribe(); });
+  escribe();
+  /* ciclo de 5 s: 0–0,8 llega el WIMP; 0,8 S1; 0,8–3,6 deriva; 3,6–4,2 S2 */
+  function cuadro(ts) {
+    requestAnimationFrame(cuadro);
+    if (!activa(host)) { ult = ts; return; }
+    const dt = Math.min(0.05, (ts - ult) / 1000); ult = ts; t += dt;
+    if (t > 5.2) { t = 0; xP = 250 + Math.random() * 340; }
+    const yP = Yz(z);
+    const f = Math.min(1, t / 0.8);
+    const x0 = 40, y0 = yP - 200;
+    wimp.setAttribute('x1', x0); wimp.setAttribute('y1', y0);
+    wimp.setAttribute('x2', x0 + (xP - x0) * f); wimp.setAttribute('y2', y0 + (yP - y0) * f);
+    wimp.style.opacity = t < 1.5 ? 1 : Math.max(0, 1 - (t - 1.5) * 2);
+    punto.setAttribute('cx', xP); punto.setAttribute('cy', yP); punto.style.opacity = t > 0.8 ? 1 : 0;
+    const a1 = t > 0.8 && t < 1.3 ? 1 - (t - 0.8) / 0.5 : 0;
+    flash.setAttribute('cx', xP); flash.setAttribute('cy', yP); flash.setAttribute('r', 10 + 60 * (1 - a1)); flash.style.opacity = a1 * 0.6;
+    const pd = t > 0.8 ? Math.min(1, (t - 0.8) / 2.8) : 0;
+    elec.forEach((e, k) => {
+      e.setAttribute('cx', xP + (k - 2.5) * 7); e.setAttribute('cy', yP + (ySup - yP) * pd + (k % 2) * 6);
+      e.style.opacity = t > 0.8 && pd < 1 ? 1 : 0;
+    });
+    const a2 = t > 3.6 && t < 4.4 ? 1 - Math.abs(t - 4.0) / 0.4 : 0;
+    s2.setAttribute('x', xP - 30); s2.style.opacity = a2 * 0.8;
+    const cRes = 'var(--res)', cPan = 'var(--panel)';
+    pmtA.forEach(p => { const d = Math.abs(+p.getAttribute('cx') - xP); p.style.fill = (a2 > 0.1 && d < 90) || a1 > 0.2 ? cRes : cPan; });
+    pmtB.forEach(p => { p.style.fill = a1 > 0.2 ? cRes : cPan; });
+    /* forma de onda: S1 estrecho y bajo, S2 ancho y alto tras la deriva real */
+    const X = tt => wx0 + 20 + tt / TMAX * (wx1 - wx0 - 40);
+    const tv = t < 0.8 ? -1 : (t < 3.6 ? (t - 0.8) / 2.8 * deriva() : deriva() + (t - 3.6) * 400);
+    const pts = [];
+    for (let k = 0; k <= 300; k++) {
+      const tt = k / 300 * TMAX;
+      let y = 0;
+      if (tv >= 0 && tt <= tv) {
+        y += 22 * Math.exp(-Math.pow(tt / 6, 2));
+        if (tv > deriva()) y += 70 * Math.exp(-Math.pow((tt - deriva()) / 14, 2));
+      }
+      pts.push(X(tt).toFixed(1) + ',' + (wy0 - y).toFixed(1));
+    }
+    onda.setAttribute('points', pts.join(' '));
+    et1.setAttribute('x', X(0) + 10); et1.setAttribute('y', wy0 - 30); et1.style.opacity = tv >= 0 ? 1 : 0;
+    et2.setAttribute('x', X(deriva()) + 16); et2.setAttribute('y', wy0 - 60); et2.style.opacity = tv > deriva() ? 1 : 0;
+  }
+  requestAnimationFrame(cuadro);
+})();
+
+/* ═══ EXPLORADOR DEL ESPECTRO ══════════════════════════════════════════ */
+(function () {
+  const host = document.getElementById('esp-fig');
+  if (!host) return;
+  let lm = 3, d = 0, n = 0;
+  const E = []; for (let k = 1; k <= 700; k++) E.push(k * 0.5);
+  function tasa(Ek, mx, dd, nn) {
+    const qMeV = Math.sqrt(2 * M_XE * 1e3 * Ek * 1e-3);     /* MeV */
+    return helm2(qMeV) * eta(vMin(Ek, mx, dd)) * Math.pow(qMeV / 100, 2 * nn);
+  }
+  function dibuja() {
+    const mx = Math.pow(10, lm);
+    document.getElementById('esp-mv').textContent = miles(mx) + ' GeV';
+    document.getElementById('esp-dv').textContent = d + ' keV';
+    const ref = E.map(e => tasa(e, mx, 0, n)), cur = E.map(e => tasa(e, mx, d, n));
+    const mref = Math.max.apply(null, ref) || 1;
+    const A = ejes(host, { W: 1160, H: 580, x: [0, 350], y: [-8, 1], logy: true, xt: [0, 50, 100, 150, 200, 250, 300, 350], yt: [-8, -6, -4, -2, 0], fy: potencia, xl: 'recoil energy *E*_R (keV)', yl: 'relative rate' });
+    const sombra = (a, b) => nodo('rect', { x: A.X(a), y: A.Y(10), width: A.X(b) - A.X(a), height: A.Y(1e-8) - A.Y(10), style: 'fill:var(--proy);opacity:.28' }, A.fondo);
+    sombra(0, 5.4); sombra(269.9, 350);
+    nodo('line', { x1: A.X(55), x2: A.X(55), y1: A.Y(10), y2: A.Y(1e-8), style: 'stroke:var(--caso2);stroke-width:2.5;stroke-dasharray:8 6' }, A.fondo);
+    rotulo(A.fondo, A.X(55) + 8, A.Y(3), 'end of previous ROI', { 'font-size': 22, style: 'fill:var(--caso2);font-family:' + FMATH });
+    nodo('line', { x1: A.X(248), x2: A.X(248), y1: A.Y(10), y2: A.Y(1e-8), style: 'stroke:var(--tinta);stroke-width:2;stroke-dasharray:3 5' }, A.fondo);
+    rotulo(A.fondo, A.X(248) - 8, A.Y(3), 'event', { 'font-size': 22, 'text-anchor': 'end' });
+    const tramo = (arr, estilo) => {
+      let seg = [];
+      arr.forEach((v, k) => {
+        const y = v / mref;
+        if (y > 1e-8) seg.push([E[k], Math.min(10, y)]);
+        else { if (seg.length > 1) polilinea(A, seg, estilo); seg = []; }
+      });
+      if (seg.length > 1) polilinea(A, seg, estilo);
+    };
+    if (d > 0) tramo(ref, 'stroke:var(--proy);stroke-width:3;stroke-dasharray:10 7');
+    tramo(cur, 'stroke:var(--res);stroke-width:5');
+    /* lecturas */
+    let win = 0, alto = 0, tot0 = 0, tot = 0;
+    cur.forEach((v, k) => { if (E[k] >= 5.4 && E[k] <= 270) { win += v; if (E[k] > 55) alto += v; } tot += v; });
+    ref.forEach(v => { tot0 += v; });
+    document.getElementById('esp-f55').textContent = win > 0 ? num(100 * alto / win, 0) + ' %' : '—';
+    const vm = vMin(248, mx, d);
+    document.getElementById('esp-vmin').textContent = miles(vm) + ' km/s';
+    document.getElementById('esp-rel').textContent = tot0 > 0 && tot > 0 ? cient(tot / tot0, 2) : 'forbidden';
+    document.getElementById('esp-lect').textContent = vm > 798 ? '248 keV unreachable' : '248 keV reachable';
+  }
+  rango('esp-m', v => { lm = v; dibuja(); });
+  rango('esp-d', v => { d = v; dibuja(); });
+  filaBotones(document.getElementById('esp-q'), b => { n = +b.dataset.n; dibuja(); });
+  dibuja();
+})();
+
+/* ═══ CINEMÁTICA ═══════════════════════════════════════════════════════ */
+(function () {
+  const host = document.getElementById('cin-fig');
+  if (!host) return;
+  let lm = 3, v = 750, En = 8.3;
+  const eMax = (mx, vk) => { const mu = mx * M_XE / (mx + M_XE); return 2 * mu * mu * Math.pow(vk / C_KMS, 2) / M_XE * 1e6; };
+  function dibuja() {
+    const mx = Math.pow(10, lm);
+    document.getElementById('cin-mv').textContent = miles(mx, mx < 10 ? 1 : 0) + ' GeV';
+    document.getElementById('cin-vv').textContent = v + ' km/s';
+    const A = ejes(host, { W: 1160, H: 560, x: [0, 4], y: [-2, 3.5], logx: true, logy: true, xt: [0, 1, 2, 3, 4], yt: [-2, -1, 0, 1, 2, 3], fx: potencia, fy: potencia, xl: 'WIMP mass *m*_χ (GeV/c²)', yl: '*E*_R^max (keV)' });
+    const franja = nodo('rect', { x: A.X(1), y: A.Y(270), width: A.X(1e4) - A.X(1), height: A.Y(5.4) - A.Y(270), style: 'fill:var(--res-50)' }, A.fondo);
+    A.fondo.insertBefore(franja, A.fondo.firstChild);
+    [[5.4, '5,4 keV'], [270, '270 keV']].forEach(p => {
+      nodo('line', { x1: A.X(1), x2: A.X(1e4), y1: A.Y(p[0]), y2: A.Y(p[0]), style: 'stroke:var(--res);stroke-width:2;stroke-dasharray:8 6' }, A.fondo);
+      rotulo(A.fondo, A.X(1) + 10, A.Y(p[0]) - 8, p[1], { 'font-size': 22, style: 'fill:var(--res);font-family:' + FMATH });
+    });
+    const pts = []; for (let k = 0; k <= 200; k++) { const m = Math.pow(10, 4 * k / 200); pts.push([m, Math.max(0.01, eMax(m, v))]); }
+    polilinea(A, pts, 'stroke:var(--caso2);stroke-width:5');
+    const e = eMax(mx, v);
+    nodo('circle', { cx: A.X(mx), cy: A.Y(Math.max(0.01, e)), r: 12, style: 'fill:var(--caso2);stroke:var(--panel);stroke-width:3' }, A.capa);
+    rotulo(A.capa, A.X(1e4) - 10, A.Y(Math.pow(10, -1.4)), 'if *m*_χ ≫ *m*_N: *E*_R^max → 2*m*_N*v*²', { 'font-size': 22, 'text-anchor': 'end' });
+    document.getElementById('cin-lect').textContent = 'maximum: ' + (e < 10 ? num(e, 2) : miles(e)) + ' keV';
+    const fn = 4 * M_N * M_XE / Math.pow(M_N + M_XE, 2), er = fn * En * 1000;
+    document.getElementById('cin-nv').textContent = num(En, 1) + ' MeV';
+    document.getElementById('cin-nr').textContent = 'E_R,max ≈ ' + miles(er) + ' keV' + (er >= 248 ? ' ✓ reaches 248 keV' : ' (does not reach 248 keV)');
+  }
+  rango('cin-m', x => { lm = x; dibuja(); });
+  rango('cin-v', x => { v = x; dibuja(); });
+  rango('cin-n', x => { En = x; dibuja(); });
+  dibuja();
+})();
+
+/* ═══ S1, S2 Y ENERGÍA ═════════════════════════════════════════════════ */
+(function () {
+  const host = document.getElementById('ss-fig');
+  if (!host) return;
+  const G1 = 0.110, G2 = 34.5, W = 13.7e-3;   /* keV */
+  const r1 = document.getElementById('ss-s1'), r2 = document.getElementById('ss-s2');
+  function dibuja() {
+    const s1 = +r1.value, ls2 = +r2.value, s2 = Math.pow(10, ls2);
+    const ng = s1 / G1, ne = s2 / G2, e = W * (ng + ne);
+    document.getElementById('ss-s1v').textContent = num(s1, 1);
+    document.getElementById('ss-s2v').textContent = num(ls2, 2);
+    document.getElementById('ss-ng').textContent = miles(ng);
+    document.getElementById('ss-ne').textContent = miles(ne);
+    document.getElementById('ss-e').textContent = num(e, 1) + ' keVₑₑ';
+    const razon = ne / ng;
+    document.getElementById('ss-lect').textContent = 'n_e / n_γ = ' + num(razon, 3);
+    document.getElementById('ss-nota').textContent = razon < 0.12 ? 'Little charge per photon: typical of a nuclear recoil (NR). As an NR, the true energy is higher than the electron-equivalent value (keVₑₑ) because of quenching.' : 'Plenty of charge per photon: typical of an electron recoil (ER).';
+    host.innerHTML = '';
+    const svg = nodo('svg', { viewBox: '0 0 1000 170', class: 'fig' }, host);
+    const esc = x => 760 * x / 5500;
+    [[ng, 'photons', 'var(--caso1)', 30], [ne, 'electrons', 'var(--caso2)', 100]].forEach(b => {
+      rotulo(svg, 0, b[3] + 30, b[1], { 'font-size': 24 });
+      nodo('rect', { x: 170, y: b[3], width: Math.max(3, esc(b[0])), height: 44, style: 'fill:' + b[2] }, svg);
+    });
+  }
+  r1.addEventListener('input', dibuja); r2.addEventListener('input', dibuja);
+  document.getElementById('ss-evt').addEventListener('click', () => { r1.value = 540.1; r2.value = Math.log10(9268).toFixed(2); dibuja(); });
+  dibuja();
+})();
+
+/* ═══ NEST: p(E) ═══════════════════════════════════════════════════════ */
+(function () {
+  const host = document.getElementById('ne-fig');
+  if (!host) return;
+  const a = 0.0230, b = 0.0289, E0 = 74.7;
+  const p = E => E < E0 ? 0.5 : 0.5 + a * Math.log(1 + b * (E - E0));
+  function dibuja(E) {
+    const A = ejes(host, { W: 1160, H: 620, x: [0, 330], y: [0.48, 0.56], xt: [0, 50, 100, 150, 200, 250, 300], yt: [0.48, 0.5, 0.52, 0.54, 0.56], fy: u => num(u, 2), xl: 'nuclear recoil energy (keV)', yl: 'exponent *p*' });
+    const banda = (x0, x1, y, txt, col) => {
+      nodo('rect', { x: A.X(x0), y: A.Y(y) - 16, width: A.X(x1) - A.X(x0), height: 16, style: 'fill:' + col + ';opacity:.55' }, A.fondo);
+      rotulo(A.fondo, A.X(x0) + 8, A.Y(y) - 24, txt, { 'font-size': 22, style: 'fill:' + col + ';font-family:' + FMATH });
+    };
+    banda(0, 74, 0.485, 'D-D', 'var(--caso2)'); banda(0, 330, 0.4815, 'AmBe', 'var(--caso1)');
+    nodo('line', { x1: A.X(E0), x2: A.X(E0), y1: A.Y(0.48), y2: A.Y(0.56), style: 'stroke:var(--proy);stroke-width:2;stroke-dasharray:6 6' }, A.fondo);
+    rotulo(A.fondo, A.X(E0) + 8, A.Y(0.555), '*E*_0', { 'font-size': 24 });
+    const pts = []; for (let k = 0; k <= 330; k++) pts.push([k, p(k)]);
+    polilinea(A, pts, 'stroke:var(--res);stroke-width:5');
+    polilinea(A, [[0, 0.5], [330, 0.5]], 'stroke:var(--proy);stroke-width:3;stroke-dasharray:10 7');
+    rotulo(A.capa, A.X(330) - 8, A.Y(0.5) + 30, 'NEST v2.4.0: *p* = 0,5', { 'font-size': 22, 'text-anchor': 'end' });
+    nodo('circle', { cx: A.X(E), cy: A.Y(p(E)), r: 11, style: 'fill:var(--res);stroke:var(--panel);stroke-width:3' }, A.capa);
+    document.getElementById('ne-ev').textContent = E + ' keV';
+    document.getElementById('ne-lect').textContent = 'p = ' + num(p(E), 4);
+  }
+  rango('ne-e', dibuja);
+  dibuja(248);
+})();
+
+/* ═══ FONDOS (tabla del artículo) ══════════════════════════════════════ */
+(function () {
+  const host = document.getElementById('fo-fig');
+  if (!host) return;
+  /* [nombre, esperado, ajuste, tipo] tipo: e = ER, n = NR, o = otro, s = señal */
+  const F = [
+    ['internal β', 1341, 1340, 'e'], ['ν ER (solar)', 140.6, 140.3, 'e'], ['¹³⁶Xe', 110.0, 114.2, 'e'], ['CH₃T & ¹⁴C', 55.3, 55.2, 'e'],
+    ['¹²⁴Xe', 21.0, 22.6, 'e'], ['⁸³ᵐKr', 17.1, 17.0, 'e'], ['¹²⁵I', 8.9, 9.8, 'e'], ['detector ERs', 8.5, 9.4, 'e'],
+    ['accidentals', 2.7, 2.6, 'o'], ['¹²⁷Xe + ¹²⁵Xe', 1.5, 1.2, 'e'], ['atmospheric ν', 0.11, 0.11, 'n'], ['⁸B + hep ν', 0.057, 0.057, 'n'],
+    ['MSSI', 0.0049, 0.0046, 'o'], ['detector NRs', 0, 0.118, 'n'], ['signal L₁₀ˢ (1000 GeV)', 0, 1.0, 's']
+  ];
+  const COL = { e: 'var(--res)', n: 'var(--caso1)', o: 'var(--caso2)', s: 'var(--tinta)' };
+  let modo = 0;
+  function dibuja() {
+    host.innerHTML = '';
+    const W = 1160, l = 300, r = 150, t = 10, fila = 37, H = t + fila * F.length + 96;
+    const svg = nodo('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'fig' }, host);
+    const X = v => l + (Math.log10(v) + 3) / 7 * (W - l - r);
+    for (let u = -3; u <= 4; u++) {
+      nodo('line', { x1: X(Math.pow(10, u)), x2: X(Math.pow(10, u)), y1: t, y2: t + fila * F.length, style: 'stroke:var(--rejilla);stroke-width:2' }, svg);
+      nodo('text', { x: X(Math.pow(10, u)), y: t + fila * F.length + 32, 'text-anchor': 'middle', 'font-size': 24, style: 'fill:var(--tinta2);font-family:' + FMATH, txt: potencia(u) }, svg);
+    }
+    F.forEach((f, k) => {
+      const y = t + k * fila, v = f[1 + modo];
+      nodo('text', { x: l - 14, y: y + 30, 'text-anchor': 'end', 'font-size': 25, style: 'fill:var(--tinta);font-family:' + FTXT, txt: f[0] }, svg);
+      if (v > 0) {
+        nodo('rect', { x: X(1e-3), y: y + 8, width: X(v) - X(1e-3), height: fila - 16, style: 'fill:' + COL[f[3]] + (f[0].indexOf('detector') === 0 && f[3] === 'n' ? ';opacity:.45' : '') }, svg);
+        nodo('text', { x: X(v) + 10, y: y + 30, 'font-size': 24, style: 'fill:var(--tinta2);font-family:' + FMATH, txt: (f[3] === 'n' && f[0].indexOf('detector') === 0 ? '≤ ' : '') + cient(v, 2) }, svg);
+      } else nodo('text', { x: X(1e-3) + 10, y: y + 30, 'font-size': 24, style: 'fill:var(--tinta2);font-family:' + FMATH, txt: f[3] === 's' ? '— (hypothesis)' : '— (no direct constraint)' }, svg);
+    });
+    const ley = [['ER', 'e'], ['NR', 'n'], ['other', 'o'], ['signal', 's']];
+    ley.forEach((p, k) => {
+      nodo('rect', { x: l + k * 190, y: H - 36, width: 26, height: 26, style: 'fill:' + COL[p[1]] }, svg);
+      nodo('text', { x: l + k * 190 + 36, y: H - 14, 'font-size': 24, style: 'fill:var(--tinta);font-family:' + FTXT, txt: p[0] }, svg);
+    });
+    document.getElementById('fo-lect').textContent = modo ? 'fitted total 1713 ± 39 · observed 1710' : 'expected total ≈ 1713';
+  }
+  filaBotones(document.getElementById('fo-mod'), b => { modo = +b.dataset.m; dibuja(); });
+  dibuja();
+})();
+
+/* ═══ MSSI ═════════════════════════════════════════════════════════════ */
+(function () {
+  const host = document.getElementById('ms-fig');
+  if (!host) return;
+  let tipo = 'rfr';
+  function dibuja() {
+    host.innerHTML = '';
+    const svg = nodo('svg', { viewBox: '0 0 1000 615', class: 'fig' }, host);
+    /* TPC: x 80–640, líquido 80–440 (superficie y = 80), cátodo y = 440, RFR hasta 500 */
+    nodo('rect', { x: 80, y: 60, width: 560, height: 440, style: 'fill:var(--res-50);stroke:var(--res);stroke-width:3' }, svg);
+    nodo('rect', { x: 80, y: 440, width: 560, height: 60, style: 'fill:var(--rejilla)' }, svg);
+    nodo('rect', { x: 80, y: 60, width: 14, height: 380, style: 'fill:var(--rejilla)' }, svg);
+    nodo('rect', { x: 626, y: 60, width: 14, height: 380, style: 'fill:var(--rejilla)' }, svg);
+    nodo('rect', { x: 160, y: 140, width: 400, height: 250, style: 'fill:none;stroke:var(--tinta);stroke-width:2.5;stroke-dasharray:10 7' }, svg);
+    rotulo(svg, 170, 170, 'fiducial volume', { 'font-size': 22 });
+    nodo('line', { x1: 80, x2: 640, y1: 440, y2: 440, style: 'stroke:var(--tinta);stroke-width:3;stroke-dasharray:10 5' }, svg);
+    rotulo(svg, 650, 450, 'cathode', { 'font-size': 22 });
+    rotulo(svg, 650, 490, 'RFR: no charge', { 'font-size': 22 });
+    rotulo(svg, 650, 110, 'wall: no charge', { 'font-size': 22 });
+    nodo('line', { x1: 90, x2: 640, y1: 80, y2: 80, style: 'stroke:var(--res);stroke-width:3' }, svg);
+    /* dispersión A: el evento, a 26 cm del cátodo */
+    const A = [300, 370];
+    const B = tipo === 'rfr' ? [360, 475] : [618, 300];
+    nodo('line', { x1: 980, y1: 200, x2: A[0], y2: A[1], style: 'stroke:var(--caso2);stroke-width:4;stroke-dasharray:12 8' }, svg);
+    nodo('line', { x1: A[0], y1: A[1], x2: B[0], y2: B[1], style: 'stroke:var(--caso2);stroke-width:4;stroke-dasharray:12 8' }, svg);
+    rotulo(svg, 900, 180, 'incoming γ', { 'font-size': 22, style: 'fill:var(--caso2);font-family:' + FMATH });
+    nodo('circle', { cx: A[0], cy: A[1], r: 16, style: 'fill:var(--res)' }, svg);
+    nodo('circle', { cx: B[0], cy: B[1], r: 16, style: 'fill:var(--caso1)' }, svg);
+    for (let k = 0; k < 4; k++) nodo('circle', { cx: A[0] - 18 + k * 12, cy: 100 + k * 50, r: 5, style: 'fill:var(--res)' }, svg);
+    rotulo(svg, A[0] - 24, A[1] + 8, 'S1 + S2 (12 keV)', { 'font-size': 22, 'text-anchor': 'end', style: 'fill:var(--res);font-family:' + FMATH });
+    rotulo(svg, B[0] + (tipo === 'rfr' ? 24 : -24), B[1] - 18, 'S1 only', { 'font-size': 22, 'text-anchor': tipo === 'rfr' ? 'start' : 'end', style: 'fill:var(--caso1);font-family:' + FMATH });
+    /* presupuesto de S1 */
+    const y0 = 530, X = v => 80 + v / 540 * 520;
+    rotulo(svg, 80, y0 - 12, 'observed S1c = 540 phd', { 'font-size': 24, style: 'fill:var(--tinta);font-family:' + FMATH });
+    nodo('rect', { x: X(0), y: y0, width: X(69) - X(0), height: 50, style: 'fill:var(--res)' }, svg);
+    nodo('rect', { x: X(69), y: y0, width: X(540) - X(69), height: 50, style: 'fill:var(--caso1)' }, svg);
+    rotulo(svg, X(0) + 6, y0 + 72, '69 phd', { 'font-size': 24 });
+    rotulo(svg, X(69) + 12, y0 + 34, '≈ 471 phd from the second scatter', { 'font-size': 24, style: 'fill:var(--panel);font-family:' + FMATH });
+    document.getElementById('ms-lect').textContent = tipo === 'rfr' ? 'second: 204 (+65 −38) keV in the RFR' : 'second: 77 ± 7 keV at the wall';
+  }
+  filaBotones(document.getElementById('ms-tipo'), b => { tipo = b.dataset.t; dibuja(); });
+  dibuja();
+})();
+
+/* ═══ EFECTO «MIRAR A OTRO LADO» ═══════════════════════════════════════ */
+(function () {
+  const host = document.getElementById('le-fig');
+  if (!host) return;
+  let z = 3.4, ln = 1.15;
+  const zGlob = (zl, N) => { const pl = pUnaCola(zl); const pg = -Math.expm1(N * Math.log1p(-pl)); return [pl, pg, zDeP(pg)]; };
+  function dibuja() {
+    const N = Math.pow(10, ln);
+    const A = ejes(host, { W: 1160, H: 470, x: [0, 3], y: [0, 4.5], logx: true, xt: [0, 1, 2, 3], yt: [0, 1, 2, 3, 4], fx: u => num(Math.pow(10, u), 0), xl: 'effective number of tests *N*_eff', yl: 'significance (σ)' });
+    polilinea(A, [[1, z], [1000, z]], 'stroke:var(--proy);stroke-width:3;stroke-dasharray:10 7');
+    rotulo(A.capa, A.X(1000) - 8, A.Y(z) - 10, 'local', { 'font-size': 22, 'text-anchor': 'end' });
+    polilinea(A, [[1, 2.6], [1000, 2.6]], 'stroke:var(--caso2);stroke-width:2.5;stroke-dasharray:4 6');
+    rotulo(A.capa, A.X(1) + 10, A.Y(2.6) + 30, 'LZ: 2.6σ global', { 'font-size': 22, style: 'fill:var(--caso2);font-family:' + FMATH });
+    const pts = []; for (let k = 0; k <= 150; k++) { const n = Math.pow(10, 3 * k / 150); pts.push([n, Math.max(0, zGlob(z, n)[2])]); }
+    polilinea(A, pts, 'stroke:var(--res);stroke-width:5');
+    const r = zGlob(z, N);
+    nodo('circle', { cx: A.X(N), cy: A.Y(Math.max(0, r[2])), r: 12, style: 'fill:var(--res);stroke:var(--panel);stroke-width:3' }, A.capa);
+    document.getElementById('le-zv').textContent = num(z, 2) + 'σ';
+    document.getElementById('le-nv').textContent = miles(N, N < 10 ? 1 : 0);
+    document.getElementById('le-pl').textContent = cient(r[0], 2);
+    document.getElementById('le-pg').textContent = cient(r[1], 2);
+    document.getElementById('le-zg').textContent = num(r[2], 2) + 'σ';
+    document.getElementById('le-lect').textContent = 'Z_glob = ' + num(r[2], 2) + 'σ';
+  }
+  rango('le-z', v => { z = v; dibuja(); });
+  rango('le-n', v => { ln = v; dibuja(); });
+  dibuja();
+})();
+
+/* ═══ MAPA DE SIGNIFICANCIA LOCAL ══════════════════════════════════════ */
+(function () {
+  const host = document.getElementById('mp-fig');
+  if (!host) return;
+  const MASAS = [10, 12, 14, 17, 21, 30, 40, 50, 100, 200, 400, 1000, 4000];
+  const L = [["s1",0,0,0,0,0,0,0,0,0,0,0,0,0],["v1",0,0,0,0,0,0,0,0,0,0,0.3,1.3,1.2],["s2",0,0,0,0,0,0,0,0,2.4,2.8,2.9,3.0,3.1],["v2",0,0,0,0,0,0,0,0,2.4,2.5,3.0,3.1,3.1],["s3",0,0,0,0,0,0,0,0,0,1.1,1.5,1.7,1.8],["v3",0,0,0,0,0,0,0,0,0.2,2.2,2.5,2.6,2.7],["s4",0,0,0,0,0,0,0,0.1,2.6,3.1,3.1,3.1,3.0],["v4",0,0,0,0,0,0,0,0.1,2.7,3.1,3.2,3.1,3.1],["s5",0,0,0,0,0,0,0,0,0,0,0,0,0],["v5",0,0,0,0,0,0,0,0,0,0,0.7,1.3,1.3],["s6",0,0,0,0,0,0,0,0,1.1,2.2,2.6,2.6,2.6],["v6",0,0,0,0,0,0,0.1,0.1,2.9,3.1,3.2,3.3,3.3],["s7",0,0,0,0,0,0,0,0,1.6,2.5,2.7,2.7,2.7],["v7",0,0,0,0,0,0,0,0,1.6,2.3,2.7,2.7,2.8],["s8",0,0,0,0,0,0,0,0,2.3,2.8,2.9,3.0,3.0],["v8",0,0,0,0,0,0,0,0,2.4,2.9,2.9,3.0,3.0],["s9",0,0,0,0,0,0,0,0,2.1,2.9,2.9,3.0,3.1],["v9",0,0,0,0,0,0,0,0,2.7,3.0,3.1,3.2,3.1],["s10",0,0,0,0,0,0,0,0,2.9,3.1,3.4,3.4,3.4],["v10",0,0,0,0,0,0,0,0,3.0,3.2,3.3,3.4,3.4],["s11",0,0,0,0,0,0,0,0,2.5,3.0,3.1,3.2,3.2],["v11",0,0,0,0,0,0,0,0,2.5,2.9,3.1,3.2,3.2],["s12",0,0,0,0,0,0,0,0,2.4,3.1,3.2,3.2,3.3],["v12",0,0,0,0,0,0,0,0,2.5,3.0,3.2,3.2,3.2],["s13",0,0,0,0,0,0,0,0,0,2.0,2.4,2.5,2.6],["v13",0,0,0,0,0,0,0,0,2.0,2.8,3.0,3.0,3.0],["s14",0,0,0,0,0,0,0,0,2.5,2.9,3.0,3.1,3.1],["v14",0,0,0,0,0,0,0,0,2.5,2.9,3.0,3.1,3.1],["s15",0,0,0,0,0,0,0,0,1.1,2.3,2.6,2.7,2.7],["v15",0,0,0,0,0,0,0,0,1.0,2.4,2.6,2.7,2.7],["s16",0,0,0,0,0,0,0,0,2.8,3.3,3.4,3.4,3.2],["v16",0,0,0,0,0,0,0,0,2.4,3.2,3.3,3.2,3.2],["s17",0,0,0,0,0,0,0,0,0,1.1,1.6,1.8,1.8],["v17",0,0,0,0,0,0,0,0,0,2.1,2.5,2.6,2.7],["s18",0,0,0,0,0,0,0,0,2.2,2.9,3.1,3.1,3.1],["v18",0,0,0,0,0,0,0,0,2.2,2.8,2.9,2.9,2.9],["s19",0,0,0,0,0,0,0,0,2.2,2.9,3.0,3.0,3.1],["v19",0,0,0,0,0,0,0,0,2.2,2.9,3.0,3.0,3.1],["s20",0,0,0,0,0,0,0,0.1,2.7,3.1,3.2,3.2,3.3],["v20",0,0,0,0,0,0,0,0.1,2.7,3.0,3.3,3.2,3.3]];
+  const DELTAS = [0, 50, 100, 150, 200, 250, 300, 350];
+  const O = [['𝒪₁ˢ', 400, [0.0,0.0,0.8,2.2,2.6,2.9,2.9,null]], ['𝒪₁ˢ', 1000, [0.0,0.0,0.8,2.2,2.7,2.9,3.0,3.3]], ['𝒪₁ˢ', 4000, [0.0,0.0,1.0,2.3,2.7,2.9,3.0,3.3]],
+             ['𝒪₁ᵛ', 400, [0.8,1.4,2.6,2.8,2.8,2.8,3.1,null]], ['𝒪₁ᵛ', 1000, [1.3,1.6,2.6,2.8,2.9,3.0,3.4,3.4]], ['𝒪₁ᵛ', 4000, [1.1,1.7,2.6,2.9,2.9,3.1,3.4,3.4]],
+             ['𝒪₄ˢ', 400, [2.6,2.7,2.8,3.1,3.2,3.2,3.3,null]], ['𝒪₄ˢ', 1000, [2.7,2.8,2.8,3.0,3.2,3.2,3.4,3.4]], ['𝒪₄ˢ', 4000, [2.8,3.0,3.0,3.1,3.2,3.3,3.4,3.4]],
+             ['𝒪₄ᵛ', 400, [2.6,2.7,2.8,3.1,3.2,3.2,3.3,null]], ['𝒪₄ᵛ', 1000, [2.7,2.8,2.8,3.0,3.2,3.2,3.3,3.4]], ['𝒪₄ᵛ', 4000, [2.8,3.0,3.0,3.1,3.2,3.3,3.4,3.4]]];
+  const lect = document.getElementById('mp-lect'), tit = document.getElementById('mp-tit');
+  const SUBI = s => s.replace(/\d/g, c => '₀₁₂₃₄₅₆₇₈₉'[c]);
+  function celdas(filas, cols, nomFila, nomCol, valor, xl) {
+    host.innerHTML = '';
+    const W = 1160, l = 190, r = 20, t = 10, b = 90, nF = filas.length, nC = cols.length;
+    const ch = nF > 14 ? 27 : 44, H = t + nF * ch + b;
+    const cw = (W - l - r) / nC;
+    const svg = nodo('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'fig' }, host);
+    filas.forEach((f, i) => {
+      nodo('text', { x: l - 12, y: t + i * ch + ch * 0.72, 'text-anchor': 'end', 'font-size': nF > 14 ? 22 : 24, style: 'fill:var(--tinta);font-family:' + FMATH, txt: nomFila(f) }, svg);
+      cols.forEach((c, j) => {
+        const v = valor(f, j);
+        const pct = v === null ? 0 : Math.round(100 * Math.min(1, v / 3.4));
+        const rc = nodo('rect', { class: 'celda', x: l + j * cw + 1, y: t + i * ch + 1, width: cw - 2, height: ch - 2,
+          style: v === null ? 'fill:var(--rejilla)' : 'fill:color-mix(in srgb, var(--res) ' + pct + '%, var(--panel))' }, svg);
+        nodo('text', { x: l + j * cw + cw / 2, y: t + i * ch + ch * 0.7, 'text-anchor': 'middle', 'font-size': nF > 14 ? 19 : 23, 'pointer-events': 'none',
+          style: 'fill:' + (pct > 55 ? 'var(--panel)' : 'var(--tinta2)') + ';font-family:' + FMATH, txt: v === null ? '–' : num(v, 1) }, svg);
+        rc.addEventListener('click', () => { lect.textContent = nomFila(f) + ' · ' + nomCol(c) + ': ' + (v === null ? 'unphysical' : num(v, 1) + 'σ'); });
+      });
+    });
+    cols.forEach((c, j) => nodo('text', { x: l + j * cw + cw / 2, y: t + nF * ch + 30, 'text-anchor': 'middle', 'font-size': 22, style: 'fill:var(--tinta2);font-family:' + FMATH, txt: String(c) }, svg));
+    rotulo(svg, l + (W - l - r) / 2, H - 16, xl, { 'text-anchor': 'middle', 'font-size': 26 });
+  }
+  function dibuja(k) {
+    lect.textContent = 'tap a cell';
+    if (k === 'o') {
+      tit.textContent = 'Local significance (σ) · inelastic operators';
+      celdas(O, DELTAS, f => f[0] + ' · ' + f[1] + ' GeV', c => 'δ = ' + c + ' keV', (f, j) => f[2][j], 'mass splitting δ (keV)');
+    } else {
+      tit.textContent = 'Local significance (σ) · ' + (k === 's' ? 'isoscalar' : 'isovector') + ' Lagrangians';
+      celdas(L.filter(f => f[0][0] === k), MASAS, f => '𝓛' + SUBI(f[0].slice(1)) + (k === 's' ? 'ˢ' : 'ᵛ'), c => c + ' GeV', (f, j) => f[j + 1], 'WIMP mass (GeV/c²)');
+    }
+  }
+  filaBotones(document.getElementById('mp-modo'), b => dibuja(b.dataset.k));
+  dibuja('s');
+})();
+</script>
+</body></html>
