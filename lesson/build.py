@@ -10,7 +10,7 @@ import argparse, glob, os, subprocess, sys
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(AQUI)
-OUT = os.path.join(RAIZ, 'LZ-interactive-lesson.html')
+OUT = os.path.join(RAIZ, 'docs', 'index.html')   # published by GitHub Pages from /docs
 
 CHROME = [
     ('<html lang="es">', '<html lang="en">'),
