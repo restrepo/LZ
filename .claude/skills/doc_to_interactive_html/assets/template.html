@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="%%LANG%%">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>%%TITLE%%</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=STIX+Two+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+%%CSS%%
+</style>
+<script>
+%%MATHJAX_CFG%%
+</script>
+%%MATHJAX%%
+</head>
+<body>
+<div id="escenario">
+  <header class="barra">
+    <span class="marca">%%BRAND%%</span>
+    <nav class="menu" aria-label="%%T_SECTIONS%%" id="menu"></nav>
+    <button class="btn-fs" id="btn-fs" aria-label="%%T_FULLSCREEN%%" title="%%T_FULLSCREEN%% (F)">⛶</button>
+  </header>
+  <button class="flecha izq" id="btn-ant" aria-label="%%T_PREV_SLIDE%%" title="%%T_PREV_SLIDE%% (←)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>
+  <button class="flecha der" id="btn-sig" aria-label="%%T_NEXT_SLIDE%%" title="%%T_NEXT_SLIDE%% (→)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></button>
+  <button class="flecha izq vert arr" aria-label="%%T_PREV_STEP_LONG%%" title="%%T_PREV_STEP%% (↑)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"></path></svg></button>
+  <button class="flecha izq vert aba" aria-label="%%T_NEXT_STEP_LONG%%" title="%%T_NEXT_STEP%% (↓)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"></path></svg></button>
+  <button class="flecha der vert arr" aria-label="%%T_PREV_STEP_LONG%%" title="%%T_PREV_STEP%% (↑)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"></path></svg></button>
+  <button class="flecha der vert aba" aria-label="%%T_NEXT_STEP_LONG%%" title="%%T_NEXT_STEP%% (↓)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"></path></svg></button>
+  <div class="pie" id="contador" aria-live="polite"></div>
+  <div class="recta" id="recta" aria-hidden="true"><div class="lleno" id="recta-lleno"></div></div>
+%%CREDIT%%
+  <div class="giro">%%T_ROTATE%%</div>
+  <div id="lienzo">
+%%SLIDES%%
+  </div>
+%%POPS%%
+</div>
+<script>
+%%JS%%
+</script>
+</body>
+</html>

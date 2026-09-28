@@ -1,0 +1,99 @@
+/* ══ NAVIGATION CHROME FOR THE SINGLE-FILE OUTPUT ════════════════════════
+   Responsive 19:9 stage (#escenario, a size container) with the chrome —
+   top bar with brand, section menu and ⛶; ‹ › slide arrows; ↑ ↓ step
+   arrows; counter; progress line; optional credit; rotate notice — and,
+   inside, the fixed lesson canvas (#lienzo, %%WIDTH%% × %%HEIGHT%%) scaled
+   by scale.js. Goes AFTER the design-system layer: colours come from the
+   roles (--res, --tinta…).
+   ═══════════════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--lienzo);display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:var(--font-body)}
+#escenario{
+  position:relative;
+  width:min(100vw, calc(100vh * 19 / 9)); height:min(100vh, calc(100vw * 9 / 19));
+  width:min(100svw, calc(100svh * 19 / 9)); height:min(100svh, calc(100svw * 9 / 19));
+  container-type:size; background:var(--papel); color:var(--tinta); overflow:hidden;
+  box-shadow:0 0 6vh rgba(0,0,0,.55);
+}
+#lienzo{position:absolute;left:0;top:0;width:%%WIDTH%%px;height:%%HEIGHT%%px;transform-origin:0 0;z-index:1}
+#lienzo > section{position:absolute;inset:0;width:%%WIDTH%%px;height:%%HEIGHT%%px;opacity:0;visibility:hidden;transform:translateY(1.6cqh);
+  transition:opacity .35s ease,transform .35s ease,visibility 0s .35s}
+#lienzo > section.activa{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .35s ease,visibility 0s}
+.barra{
+  position:absolute;inset:0 0 auto 0;height:4.6cqh;z-index:30;
+  display:flex;align-items:center;gap:1.01cqw;padding:0 1.52cqw;
+  background:color-mix(in srgb, var(--papel) 86%, transparent);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--linea);transition:opacity .5s;
+}
+.marca{font-size:2.3cqh;font-weight:600;color:var(--tinta2);white-space:nowrap}
+.menu{margin-left:auto;display:flex;gap:0.17cqw}
+.menu button{
+  font:500 2.3cqh/1 var(--font-body);color:var(--tinta2);background:none;border:none;cursor:pointer;
+  padding:1cqh 0.7cqw;border-radius:.9cqh;position:relative;white-space:nowrap;
+}
+.menu button:hover{color:var(--tinta);background:color-mix(in srgb, var(--tinta) 5%, transparent)}
+.menu button.actual{color:var(--res);font-weight:700}
+.menu button.actual::after{content:'';position:absolute;left:0.7cqw;right:0.7cqw;bottom:.45cqh;height:.35cqh;background:var(--res);border-radius:1cqh}
+.btn-fs{font-size:2.5cqh;color:var(--tinta2);background:none;border:none;cursor:pointer;padding:.8cqh 1cqh;border-radius:.9cqh;line-height:1}
+.btn-fs:hover{color:var(--tinta);background:color-mix(in srgb, var(--tinta) 5%, transparent)}
+.flecha{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:30;
+  width:4.6cqh;height:4.6cqh;border-radius:50%;padding:0;
+  border:1px solid var(--borde);background:color-mix(in srgb, var(--panel) 85%, transparent);
+  color:var(--tinta);cursor:pointer;opacity:.72;display:flex;align-items:center;justify-content:center;transition:opacity .25s;
+}
+.flecha:hover{opacity:1;color:var(--res)}
+.flecha svg{width:2.4cqh;height:2.4cqh;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.flecha.izq{left:0.51cqw}.flecha.der{right:0.51cqw}
+.flecha.vert{width:4cqh;height:4cqh}
+.flecha.vert svg{width:2cqh;height:2cqh}
+.flecha.arr{top:calc(50% - 7.6cqh)}
+.flecha.aba{top:calc(50% + 7.6cqh)}
+#escenario.sin-pasos .flecha.vert{display:none}
+.pie{position:absolute;right:1.52cqw;bottom:2.2cqh;z-index:30;font-size:2.5cqh;color:var(--tinta2);transition:opacity .5s;font-variant-numeric:tabular-nums}
+.pie:hover{color:var(--tinta)}
+.pie-in{width:7ch;font:inherit;color:var(--tinta);background:var(--panel);border:1px solid var(--borde);border-radius:.6cqh;padding:.15cqh .5cqh;text-align:center}
+.recta{position:absolute;left:0;right:0;bottom:0;height:1.7cqh;z-index:29}
+.recta::before{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--linea)}
+.recta .lleno{position:absolute;left:0;bottom:0;height:.55cqh;background:var(--res);transition:width .35s ease}
+.recta .tick{position:absolute;bottom:0;width:2px;height:1.2cqh;background:var(--proy)}
+#escenario.quieto .barra,#escenario.quieto .flecha,#escenario.quieto .pie{opacity:.1}
+.credito{position:absolute;left:1.52cqw;bottom:2.2cqh;z-index:29;font-size:2.5cqh;color:var(--tinta2);margin:0;transition:opacity .5s}
+#escenario.quieto .credito{opacity:.08}
+/* on posters (accent field) the bottom chrome turns light */
+#escenario.en-poster .credito,#escenario.en-poster .pie{color:var(--color-bg)}
+.giro{display:none;position:absolute;left:50%;top:6.2cqh;transform:translateX(-50%);z-index:40;
+  background:rgba(20,26,36,.85);color:#fff;font-size:3cqh;padding:1.1cqh 2.02cqw;border-radius:5cqh;pointer-events:none;white-space:nowrap}
+@media (orientation: portrait) and (pointer: coarse){ .giro{display:block} }
+:focus-visible{outline:.4cqh solid var(--res);outline-offset:.3cqh}
+/* coexisting with the chrome: the cover help line sits above the credit and posters start below the bar */
+#lienzo section.diapositiva .ayuda{bottom:8.9cqh}
+#lienzo section.poster{padding-top:9.6cqh}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
+@media print{
+  @page{size:%%WIDTH%%px %%HEIGHT%%px;margin:0}
+  html,body{overflow:visible;background:#fff;display:block}
+  #escenario{width:%%WIDTH%%px;height:auto;box-shadow:none;overflow:visible}
+  #lienzo{position:static;transform:none!important;width:auto;height:auto}
+  #lienzo > section{position:relative;visibility:visible;opacity:1;transform:none;page-break-after:always;break-after:page}
+  .barra,.flecha,.pie,.recta,.credito,.giro{display:none!important}
+}
+
+/* ── Pop-up living in #escenario (outside the canvas): same treatment the
+   layer gives inside a slide — inline maths and the system surface. ──── */
+#escenario > .popover{border:2px solid var(--tinta);box-shadow:var(--shadow-lg, 0 18px 48px rgba(0,0,0,.18));background:var(--panel);z-index:45}
+#escenario > .popover mjx-container:not([display="true"]){display:inline-block !important;margin:0 !important}
+#escenario > .popover mjx-container svg{display:inline}
+
+/* ── Steps (↓ ↑) ──────────────────────────────────────────────────────
+   Pending steps are DIMMED (they preview what is coming) and go to 100 %
+   on their turn. Exception: .frag.aparece (answers, questions whose data
+   do not exist yet) stays hidden until its turn. Prefixed with #lienzo to
+   win over any .frag rule in the lesson. */
+#lienzo .frag{opacity:.25;transform:none;filter:none;transition:opacity .35s ease}
+#lienzo [data-intento] .frag{opacity:.07}
+#lienzo .frag.frag-on{opacity:1}
+#lienzo .frag.aparece{visibility:hidden}
+#lienzo .frag.aparece.frag-on{visibility:visible;opacity:1}
+@media print{ #lienzo .frag,#lienzo .frag.aparece{opacity:1;visibility:visible} }

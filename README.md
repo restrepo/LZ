@@ -17,20 +17,33 @@ local-significance map. Navigation: `→`/`←` slides, `↓`/`↑` steps, `spac
 |---|---|
 | `docs/index.html` | Built lesson, published by GitHub Pages |
 | `docs/.nojekyll` | Serve files as-is (no Jekyll processing) |
-| `lesson/source.html` | Editable lesson source (clase-slides format) |
+| `lesson/source.html` | Editable lesson source |
 | `lesson/img/` | Paper figures converted to WebP |
-| `lesson/_ds/fundamentacion/` | Design system |
-| `lesson/build.py` | Build script |
+| `lesson/build.py` | Build script (uses the skill below) |
+| `.claude/skills/doc_to_interactive_html/` | Claude Code skill that turns a document into a single-file interactive HTML lesson |
 
 ### Rebuild
 
-Requires the `leccion-a-deck` skill:
-
 ```bash
-python lesson/build.py            # or: python lesson/build.py --skill /path/to/leccion-a-deck
+pip install playwright pillow      # only needed for the verification step
+python lesson/build.py             # rewrites docs/index.html
+python .claude/skills/doc_to_interactive_html/scripts/verify_html.py docs/index.html /tmp/shots   # must print PASS
 ```
 
-This rewrites `docs/index.html`; commit and push it to `main` to update the site.
+Commit and push `docs/index.html` to `main` to update the site.
+
+## The `doc_to_interactive_html` skill
+
+Claude Code loads the skill automatically when working in this repository (ask, for example, *"turn main.tex into an
+interactive HTML lesson"*). It can also be run by hand:
+
+```bash
+python .claude/skills/doc_to_interactive_html/scripts/build_html.py SOURCE.html --out OUTPUT.html \
+    [--ds DESIGN_SYSTEM_DIR] [--lang en|es] [--credit "…"] [--brand "…"]
+```
+
+English interface and no credit line by default. `SKILL.md` describes the workflow; `assets/source-template.html` is a
+starting point for a new lesson.
 
 ### GitHub Pages setup (one time)
 

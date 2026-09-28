@@ -1,0 +1,353 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<title>Lesson title · Course</title>
+<style>
+:root{
+  --t-rotulo:25px; --t-peq:30px; --t-cuerpo:37px; --t-titulo:70px; --t-portada:132px;
+}
+/* ── Lesson styles (canvas 2280 × 1080, units in px; colours only through role variables) ── */
+section.diapositiva{position:relative}
+section.diapositiva p{margin:0 0 14px}
+section.diapositiva .ceja{font:600 var(--t-rotulo)/1 var(--font-body);text-transform:uppercase;margin:0 0 6px}
+section.diapositiva .ceja .score{float:right;color:var(--tinta2);letter-spacing:.04em}
+section.diapositiva strong{font-weight:700}
+section.diapositiva .sub{color:var(--tinta2);font-size:var(--t-peq)}
+
+/* grids */
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:44px;align-items:start}
+.g2-60{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:44px;align-items:start}
+.g2-40{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:44px;align-items:start}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.pila > * + *{margin-top:18px}
+
+/* boxes */
+.caja{background:var(--panel);border:2px solid var(--linea);border-left:9px solid var(--res);padding:16px 24px}
+.caja.c1{border-left-color:var(--caso1)}
+.caja.c2{border-left-color:var(--caso2)}
+.caja.neutra{border-left-color:var(--borde)}
+.caja h3{font-size:34px;margin:0 0 8px}
+.kf{border:2px solid var(--res);background:var(--res-50);padding:12px 26px;text-align:center;font-size:38px}
+.nota{font-size:var(--t-peq);color:var(--tinta2)}
+ul.lista{margin:0;padding-left:1.1em}
+ul.lista li{margin-bottom:10px}
+ol.leyes{margin:0;padding-left:1.3em}
+ol.leyes li{margin-bottom:12px}
+.chico,.chico p,.chico li{font-size:31px}
+.lista.chico li{margin-bottom:8px}
+
+/* figures */
+.svgbox{background:var(--panel);padding:14px 18px 16px}
+.svghd{font:700 var(--t-rotulo)/1.2 var(--font-body);color:var(--tinta2);margin:0 0 10px;display:flex;justify-content:space-between;gap:20px}
+.svghd .val{color:var(--res);text-transform:none;letter-spacing:0;font-variant-numeric:tabular-nums}
+.fig{display:block;width:100%;height:auto}
+.fig text{font-family:'STIX Two Text',Georgia,serif}
+.foto{display:block;width:auto;max-width:100%;height:auto;max-height:var(--fh,600px);margin:0 auto;object-fit:contain;border:2px solid var(--linea);background:var(--neutro-foto,#fff)}
+figure.fg{margin:0}
+figure.fg figcaption{font-size:23px;line-height:1.35;color:var(--tinta2);margin-top:8px}
+
+/* controls */
+.ctrl{display:grid;grid-template-columns:300px 1fr 190px;align-items:center;gap:18px;margin:8px 0;font-size:var(--t-peq)}
+.ctrl .v{font:600 var(--t-peq)/1 var(--font-body);text-align:right;font-variant-numeric:tabular-nums;color:var(--res)}
+.ctrl input[type=range]{width:100%;height:30px;cursor:pointer}
+.fila-btn{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0}
+.btn{font:600 var(--t-peq)/1 var(--font-body);padding:10px 18px;background:var(--panel);color:var(--tinta);border:2px solid var(--linea);cursor:pointer}
+.btn:hover{background:var(--primario-tinte)}
+.btn.on{border-color:var(--res);color:var(--res);background:var(--res-50)}
+.lectura{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:12px}
+.lectura.l2{grid-template-columns:1fr 1fr}
+.lectura.l3{grid-template-columns:repeat(3,1fr)}
+.lectura div{background:var(--panel);border:2px solid var(--linea);padding:10px 16px;font-size:25px;color:var(--tinta2)}
+.lectura b{display:block;font:700 34px/1.25 var(--font-body);color:var(--tinta);font-variant-numeric:tabular-nums}
+.lectura b.acento{color:var(--res)}
+
+/* table */
+table.tabla{border-collapse:collapse;width:100%;font-size:29px}
+table.tabla th,table.tabla td{border-bottom:2px solid var(--linea);padding:6px 14px;text-align:center}
+table.tabla th{font:700 25px/1.2 var(--font-body);color:var(--tinta2);border-bottom-color:var(--tinta)}
+table.tabla td.izq,table.tabla th.izq{text-align:left}
+
+/* chips with pop-ups */
+.prop{border-bottom:3px dotted var(--res);cursor:help;color:var(--tinta);font-weight:600}
+.prop:hover{background:var(--res-50)}
+.pop-src{display:none}
+.popover{position:absolute;z-index:40;max-width:860px;padding:24px 30px;font-size:30px;line-height:1.45}
+.popover h4{margin:0 0 8px;font:800 28px/1.2 var(--font-heading);color:var(--res)}
+.popover .cerrar{position:absolute;top:8px;right:12px;border:0;background:none;font-size:28px;cursor:pointer;color:var(--tinta2)}
+
+/* practice */
+.pr-item{background:var(--panel);padding:14px 22px;margin-bottom:14px}
+.pr-q{font-weight:600;margin-bottom:10px;font-size:31px}
+.pr-opcs{display:flex;flex-wrap:wrap;gap:12px}
+.pr-opc{font:500 28px/1.2 var(--font-body);padding:10px 18px;background:var(--papel);border:2px solid var(--linea);cursor:pointer;color:var(--tinta)}
+.pr-opc.ok{border-color:var(--ok);background:var(--res-50)}
+.pr-opc.mal{border-color:var(--mal);background:var(--mal-50)}
+.pr-fb{margin-top:8px;font-size:27px;min-height:1.2em}
+.pr-fb.ok{color:var(--res)} .pr-fb.mal{color:var(--mal)}
+.pr-in{font-size:30px;padding:8px 12px;width:200px;border:2px solid var(--linea);background:var(--papel)}
+.pr-btn{font:600 28px/1 var(--font-body);padding:10px 18px;border:2px solid var(--linea);background:var(--papel);cursor:pointer;color:var(--tinta);margin-left:10px}
+.pr-pista{display:none;margin-top:8px;font-size:27px;color:var(--tinta2)}
+.pr-pista.on{display:block}
+
+/* glossary */
+dl.glosa{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px 44px;margin:0}
+dl.glosa div{border-top:2px solid var(--linea);padding-top:8px}
+dl.glosa dt{font:800 31px/1.2 var(--font-heading);color:var(--res);margin-bottom:4px}
+dl.glosa dd{margin:0;font-size:26px;line-height:1.35}
+
+/* cover */
+.portada .pt-fig{width:760px}
+.portada .sub{font-size:36px;max-width:1200px}
+.ayuda{position:absolute;bottom:84px;font-size:22px;color:var(--tinta2)}
+.ayuda kbd{font:600 20px/1 var(--font-body);border:2px solid var(--linea);padding:3px 8px;margin:0 2px;background:var(--panel)}
+
+/* key idea */
+section.diapositiva > .clave{position:absolute;left:640px;right:170px;bottom:22px;margin:0;font:italic 500 25px/1.2 var(--font-body);color:var(--tinta2);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+section.diapositiva > .clave::before{content:'Key idea · ';font-style:normal;font-weight:700;color:var(--res)}
+</style></head>
+<body>
+<div id="escenario">
+<span class="marca">Topic · Course</span>
+
+<!-- ═════════════ §1 · INTRODUCTION ═════════════ -->
+<section class="diapositiva portada" data-seccion="Introduction" id="dp-cover" data-label="Lesson title">
+  <div>
+    <p class="ceja">Subject · Unit</p>
+    <h1>Lesson title</h1>
+    <div class="regla"></div>
+    <p class="sub">One or two sentences on what the lesson covers.</p>
+    <p class="nota" style="margin-top:28px">Based on: source document (year).</p>
+  </div>
+  <figure class="pt-fig svgbox" style="margin:0">
+    <div class="svghd"><span>A figure for the cover</span><span class="val" id="ex-lect"></span></div>
+    <div id="ex-fig"></div>
+    <label class="ctrl" style="grid-template-columns:220px 1fr 150px"><span>Amplitude \(A\)</span><input type="range" id="ex-a" min="0.2" max="2" step="0.05" value="1"><span class="v" id="ex-av"></span></label>
+  </figure>
+  <p class="ayuda"><kbd>→</kbd> next slide &nbsp;·&nbsp; <kbd>↑</kbd><kbd>↓</kbd> steps within the slide &nbsp;·&nbsp; <kbd>space</kbd> everything in order &nbsp;·&nbsp; <kbd>F</kbd> full screen</p>
+</section>
+
+<section class="diapositiva" data-seccion="Introduction" id="dp-idea" data-label="A text slide">
+  <p class="ceja">§ 1 · Eyebrow</p>
+  <h2 class="titulo">A slide with steps</h2>
+  <div class="g2">
+    <div class="pila">
+      <div class="caja"><p class="chico" style="margin:0">Always visible. A <span class="prop" data-pop="pop-term">term</span> with a pop-up definition.</p></div>
+      <div class="caja c2 frag"><p class="chico" style="margin:0">Revealed with ↓ (dimmed until then).</p></div>
+      <div class="kf frag">\[ E = mc^{2} \]</div>
+      <p class="nota frag aparece">Hidden until its turn: use <code>frag aparece</code> for answers.</p>
+    </div>
+    <figure class="fg">
+      <img class="foto" style="--fh:600px" src="img/figure.webp" alt="Describe the figure">
+      <figcaption>Caption, with its source.</figcaption>
+    </figure>
+  </div>
+  <p class="clave">One sentence with the key idea of the slide.</p>
+</section>
+
+<!-- ═════════════ §2 · PRACTICE ═════════════ -->
+<section class="diapositiva compacta" data-seccion="Practice" id="dp-practice" data-label="Practice">
+  <p class="ceja">Practice <span class="score">score: <span class="pr-score">0</span> / 2</span></p>
+  <h2 class="titulo">Check what you learned</h2>
+  <div class="g2">
+    <div class="pr-item" data-ok-num="3.0" data-tol="0.05">
+      <div class="pr-q">1. A numeric question?</div>
+      <input class="pr-in" type="text" inputmode="decimal" aria-label="Answer 1"><button type="button" class="pr-btn">Check</button><button type="button" class="pr-btn pr-verpista">Hint</button>
+      <div class="pr-pista">A hint.</div>
+      <div class="pr-fb" data-ok-txt="Correct: why." data-mal-txt="Not quite: what to check."></div>
+    </div>
+    <div class="pr-item" data-ok="b">
+      <div class="pr-q">2. A multiple-choice question?</div>
+      <div class="pr-opcs"><button type="button" class="pr-opc" data-o="a">Option A</button><button type="button" class="pr-opc" data-o="b">Option B</button></div>
+      <div class="pr-fb" data-ok-txt="Correct: why." data-mal-txt="Not quite: what to think about."></div>
+    </div>
+  </div>
+</section>
+
+<section class="diapositiva compacta" data-seccion="Practice" id="dp-glossary" data-label="Glossary">
+  <p class="ceja">Glossary</p>
+  <h2 class="titulo">Terms used in this lesson</h2>
+  <dl class="glosa">
+    <div><dt>Term</dt><dd>Definition.</dd></div>
+  </dl>
+</section>
+
+<div class="pop-src" id="pop-term" style="display:none"><h4>Term</h4><p>Longer definition, maths allowed: \(x^{2}\).</p></div>
+
+<script>
+/* ═══ UTILITIES ════════════════════════════════════════════════════════ */
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const NS = 'http://www.w3.org/2000/svg';
+const num = (x, d) => { const s = Math.abs(x).toFixed(d); return (x < 0 && Number(s) !== 0 ? '−' : '') + s; };
+const activa = el => { const d = el && el.closest('section'); return !!(d && d.hasAttribute('data-deck-active')); };
+const FMATH = "'STIX Two Text',Georgia,serif";
+const FTXT = 'Archivo,system-ui,sans-serif';
+const miles = (x, d) => num(x, d || 0).replace(/^(\d+)/, m => m.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+const supx = e => String(e).replace('-', '⁻').replace(/\d/g, c => '⁰¹²³⁴⁵⁶⁷⁸⁹'[c]);
+function cient(v, c) {
+  if (v === 0) return '0';
+  const e = Math.floor(Math.log10(Math.abs(v)));
+  if (e >= -2 && e <= 3) return num(v, Math.max(0, (c || 2) - Math.max(0, e)));
+  return num(v / Math.pow(10, e), c || 2) + ' × 10' + supx(e);
+}
+
+function nodo(tag, at, padre) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in at) {
+    if (k === 'txt') e.textContent = at[k];
+    else e.setAttribute(k, at[k]);
+  }
+  if (padre) padre.appendChild(e);
+  return e;
+}
+/* Label with italic variables: "*x* (m)" → x in italics; _sub subscript; ^sup superscript. */
+function rotulo(g, x, y, s, extra) {
+  const t = nodo('text', Object.assign({ x: x, y: y, 'font-size': 28, style: 'fill:var(--tinta2);font-family:' + FMATH }, extra || {}), g);
+  s.split(/(\*[^*]+\*|_[A-Za-z0-9]+|\^[A-Za-z0-9−]+)/).forEach(tr => {
+    if (!tr) return;
+    if (tr[0] === '*') nodo('tspan', { 'font-style': 'italic', txt: tr.slice(1, -1) }, t);
+    else if (tr[0] === '_') { nodo('tspan', { 'baseline-shift': 'sub', 'font-size': '70%', txt: tr.slice(1) }, t); nodo('tspan', { txt: ' ' }, t); }
+    else if (tr[0] === '^') { nodo('tspan', { 'baseline-shift': 'super', 'font-size': '70%', txt: tr.slice(1) }, t); nodo('tspan', { txt: ' ' }, t); }
+    else nodo('tspan', { txt: tr }, t);
+  });
+  return t;
+}
+/* Cartesian axes; with o.logx / o.logy the limits and ticks are given in log10. */
+function ejes(host, o) {
+  host.innerHTML = '';
+  const W = o.W, H = o.H, m = o.m || { l: 110, r: 24, t: 20, b: 80 };
+  const svg = nodo('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'fig' }, host);
+  const tx = v => o.logx ? Math.log10(v) : v, ty = v => o.logy ? Math.log10(v) : v;
+  const X = v => m.l + (tx(v) - o.x[0]) / (o.x[1] - o.x[0]) * (W - m.l - m.r);
+  const Y = v => H - m.b - (ty(v) - o.y[0]) / (o.y[1] - o.y[0]) * (H - m.t - m.b);
+  const Xr = u => m.l + (u - o.x[0]) / (o.x[1] - o.x[0]) * (W - m.l - m.r);
+  const Yr = u => H - m.b - (u - o.y[0]) / (o.y[1] - o.y[0]) * (H - m.t - m.b);
+  const fondo = nodo('g', {}, svg);
+  (o.xt || []).forEach(u => {
+    nodo('line', { x1: Xr(u), x2: Xr(u), y1: Yr(o.y[0]), y2: Yr(o.y[1]), style: 'stroke:var(--rejilla);stroke-width:2' }, fondo);
+    nodo('text', { x: Xr(u), y: H - m.b + 36, 'text-anchor': 'middle', 'font-size': 26, style: 'fill:var(--tinta2);font-family:' + FMATH, txt: o.fx ? o.fx(u) : num(u, 0) }, fondo);
+  });
+  (o.yt || []).forEach(u => {
+    nodo('line', { x1: Xr(o.x[0]), x2: Xr(o.x[1]), y1: Yr(u), y2: Yr(u), style: 'stroke:var(--rejilla);stroke-width:2' }, fondo);
+    nodo('text', { x: m.l - 12, y: Yr(u) + 9, 'text-anchor': 'end', 'font-size': 26, style: 'fill:var(--tinta2);font-family:' + FMATH, txt: o.fy ? o.fy(u) : num(u, 0) }, fondo);
+  });
+  nodo('line', { x1: Xr(o.x[0]), x2: Xr(o.x[0]), y1: Yr(o.y[0]), y2: Yr(o.y[1]), style: 'stroke:var(--tinta);stroke-width:2.5' }, fondo);
+  nodo('line', { x1: Xr(o.x[0]), x2: Xr(o.x[1]), y1: Yr(o.y[0]), y2: Yr(o.y[0]), style: 'stroke:var(--tinta);stroke-width:2.5' }, fondo);
+  if (o.xl) rotulo(fondo, (m.l + W - m.r) / 2, H - 10, o.xl, { 'text-anchor': 'middle' });
+  if (o.yl) rotulo(fondo, 26, (m.t + H - m.b) / 2, o.yl, { 'text-anchor': 'middle', transform: 'rotate(-90 26 ' + (m.t + H - m.b) / 2 + ')' });
+  const capa = nodo('g', {}, svg);
+  return { svg: svg, X: X, Y: Y, capa: capa, W: W, H: H, m: m, fondo: fondo };
+}
+const potencia = u => '10' + supx(u);
+const polilinea = (A, pts, estilo, g) => nodo('polyline', { points: pts.map(p => A.X(p[0]).toFixed(1) + ',' + A.Y(p[1]).toFixed(1)).join(' '), style: 'fill:none;' + estilo }, g || A.capa);
+function rango(id, alCambiar) {
+  const r = document.getElementById(id);
+  if (!r) return null;
+  r.addEventListener('input', () => alCambiar(+r.value));
+  return r;
+}
+function filaBotones(host, f) {
+  if (!host) return;
+  host.addEventListener('click', ev => {
+    const b = ev.target.closest('button'); if (!b) return;
+    $$('button', host).forEach(o => o.classList.toggle('on', o === b));
+    f(b);
+  });
+}
+/* Special functions */
+function erf(x) {
+  const s = x < 0 ? -1 : 1; x = Math.abs(x);
+  const t = 1 / (1 + 0.3275911 * x);
+  const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+  return s * y;
+}
+/* one-sided p for Z standard deviations (accurate in the tail) */
+function pUnaCola(z) {
+  if (z < 0) return 1 - pUnaCola(-z);
+  /* Mills continued fraction for large z; erf for small z */
+  if (z < 3) return 0.5 * (1 - erf(z / Math.SQRT2));
+  let f = z;
+  for (let k = 40; k >= 1; k--) f = z + k / f;
+  return Math.exp(-z * z / 2) / Math.sqrt(2 * Math.PI) / f;
+}
+/* Inverse: Z such that pUnaCola(Z) = p (bisection) */
+function zDeP(p) {
+  let a = -8, b = 12;
+  for (let k = 0; k < 80; k++) { const c = (a + b) / 2; if (pUnaCola(c) > p) a = c; else b = c; }
+  return (a + b) / 2;
+}
+
+/* ═══ POP-UPS ══════════════════════════════════════════════════════════ */
+(function () {
+  let pop = null;
+  const cerrar = () => { if (pop) { pop.remove(); pop = null; } };
+  document.addEventListener('click', ev => {
+    const chip = ev.target instanceof Element ? ev.target.closest('.prop') : null;
+    if (!chip) { if (pop && !(ev.target instanceof Element && ev.target.closest('.popover'))) cerrar(); return; }
+    ev.stopPropagation();
+    cerrar();
+    const src = document.getElementById(chip.dataset.pop);
+    const dp = chip.closest('section');
+    if (!src || !dp) return;
+    pop = document.createElement('div');
+    pop.className = 'popover';
+    pop.innerHTML = '<button type="button" class="cerrar" aria-label="Close">×</button>' + src.innerHTML;
+    pop.querySelector('.cerrar').addEventListener('click', cerrar);
+    dp.appendChild(pop);
+    const R = dp.getBoundingClientRect(), c = chip.getBoundingClientRect(), s = R.width / dp.offsetWidth;
+    let x = (c.left - R.left) / s, y = (c.bottom - R.top) / s + 14;
+    x = Math.min(x, dp.offsetWidth - pop.offsetWidth - 40);
+    if (y + pop.offsetHeight > dp.offsetHeight - 40) y = (c.top - R.top) / s - pop.offsetHeight - 14;
+    pop.style.left = Math.max(40, x) + 'px';
+    pop.style.top = Math.max(40, y) + 'px';
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); });
+  document.addEventListener('slidechange', cerrar);
+})();
+
+/* ═══ PRACTICE (any slide with .pr-item) ══════════════════════════════ */
+(function () {
+  $$('section.diapositiva').forEach(dp => {
+    const items = $$('.pr-item', dp);
+    if (!items.length) return;
+    const marcador = $('.pr-score', dp);
+    let aciertos = 0;
+    const fb = (it, ok) => { const f = $('.pr-fb', it); f.className = 'pr-fb ' + (ok ? 'ok' : 'mal'); f.textContent = (ok ? '✓ ' : '✗ ') + (ok ? f.dataset.okTxt : f.dataset.malTxt); };
+    const acierta = it => { if (!it.dataset.hecho) { it.dataset.hecho = '1'; aciertos++; if (marcador) marcador.textContent = aciertos; } };
+    items.forEach(it => {
+      $$('.pr-opc', it).forEach(b => b.addEventListener('click', () => {
+        const ok = b.dataset.o === it.dataset.ok;
+        $$('.pr-opc', it).forEach(o => o.classList.remove('ok', 'mal'));
+        b.classList.add(ok ? 'ok' : 'mal'); fb(it, ok); if (ok) acierta(it);
+      }));
+      const inp = $('.pr-in', it);
+      if (inp) {
+        const revisa = () => {
+          const v = parseFloat(inp.value.replace(/\s/g, '').replace('−', '-'));
+          const ok = Math.abs(v - +it.dataset.okNum) <= +it.dataset.tol;
+          inp.style.borderColor = ok ? 'var(--res)' : 'var(--mal)'; fb(it, ok); if (ok) acierta(it);
+        };
+        inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); revisa(); } });
+        $$('.pr-btn', it).forEach(b => b.addEventListener('click', () => {
+          if (b.classList.contains('pr-verpista')) $('.pr-pista', it).classList.toggle('on'); else revisa();
+        }));
+      }
+    });
+  });
+})();
+
+
+/* ═══ EXAMPLE EXPLORER: y = A sin x ═════════════════════════════════════ */
+(function () {
+  const host = document.getElementById('ex-fig');
+  if (!host) return;
+  rango('ex-a', dibuja);
+  function dibuja(A) {
+    const E = ejes(host, { W: 720, H: 460, x: [0, 6.3], y: [-2, 2], xt: [0, 2, 4, 6], yt: [-2, -1, 0, 1, 2], xl: '*x*', yl: '*y*' });
+    const pts = []; for (let k = 0; k <= 200; k++) { const x = 6.3 * k / 200; pts.push([x, A * Math.sin(x)]); }
+    polilinea(E, pts, 'stroke:var(--res);stroke-width:5');
+    document.getElementById('ex-av').textContent = num(A, 2);
+    document.getElementById('ex-lect').textContent = 'max = ' + num(A, 2);
+  }
+  dibuja(1);
+})();
+</script>
+</body></html>

@@ -1,6 +1,6 @@
-/* Sistema de diseño «Fundamentación» — tokens para decks de física.
-   Papel cálido, tinta casi negra, un acento principal (azul) y dos acentos
-   de rol (verde, ámbar) para distinguir magnitudes en figuras y fórmulas. */
+/* Default design system — tokens for physics lessons.
+   Warm paper, near-black ink, one main accent (blue) and two role accents
+   (green, amber) to tell quantities apart in figures and formulas. */
 :root{
   --color-bg:#FAF9F6;
   --color-surface:#F2F0EA;
