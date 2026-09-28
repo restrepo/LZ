@@ -1,0 +1,45 @@
+/* Sistema de diseño «Fundamentación» — tokens para decks de física.
+   Papel cálido, tinta casi negra, un acento principal (azul) y dos acentos
+   de rol (verde, ámbar) para distinguir magnitudes en figuras y fórmulas. */
+:root{
+  --color-bg:#FAF9F6;
+  --color-surface:#F2F0EA;
+  --color-text:#1B1A18;
+  --color-divider:#D6D1C6;
+
+  --color-neutral-100:#FFFFFF;
+  --color-neutral-200:#EEEBE4;
+  --color-neutral-300:#DAD5CB;
+  --color-neutral-400:#B3ADA2;
+  --color-neutral-600:#77716A;
+  --color-neutral-700:#57524C;
+  --color-neutral-800:#3A3632;
+  --color-neutral-900:#201E1C;
+
+  --color-accent:#1D4ED8;
+  --color-accent-100:#E8EEFC;
+  --color-accent-200:#CCDAF8;
+  --color-accent-300:#9DB6F0;
+  --color-accent-600:#1A45C0;
+  --color-accent-700:#1E3A8A;
+  --color-accent-800:#172E6B;
+
+  --color-accent-2:#B45309;
+  --color-accent-2-100:#FDF1E3;
+  --color-accent-2-700:#8A3F07;
+
+  --color-accent-3:#047857;
+  --color-accent-3-100:#E3F4EE;
+  --color-accent-3-700:#065F46;
+
+  --color-error:#B91C1C;
+  --color-error-100:#FDECEC;
+
+  --font-heading:'Archivo',system-ui,sans-serif;
+  --font-heading-weight:800;
+  --font-body:'Archivo',system-ui,sans-serif;
+  --font-math:'STIX Two Text',Georgia,serif;
+
+  --radius-md:6px;
+  --shadow-lg:0 18px 48px rgba(27,26,24,.18);
+}
