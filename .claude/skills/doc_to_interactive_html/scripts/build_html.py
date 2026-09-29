@@ -4,17 +4,21 @@
 Usage:
   python build_html.py SOURCE.html --out OUTPUT.html [--ds PATH/TO/design-system]
          [--lang en|es] [--brand TEXT] [--credit TEXT | --lesson-credit]
-         [--width 2280 --height 1080] [--no-posters] [--no-closing]
+         [--ratio 19:9|16:9|16:10|4:3 …] [--width N --height N]
+         [--fit auto|on|off] [--fit-max K] [--no-posters] [--no-closing]
          [--mathjax inline|cdn]
 
 What it produces (see references/standalone.md):
-  · a responsive 19:9 stage with the navigation chrome: top bar (brand,
+  · a responsive stage (19:9 by default; --ratio 16:9 …) with the navigation chrome: top bar (brand,
     auto-generated section menu, ⛶ full screen), ‹ › slide arrows, ↑ ↓ step
     arrows (only on slides with steps), a slide counter that opens a
     go-to-slide field, a progress line with section ticks, a rotate notice,
     idle dimming and pinch zoom; an optional credit line (none by default);
-  · a fixed canvas (--width × --height) holding the slides plus an
+  · a fixed canvas (--width × --height, derived from --ratio: 2280×1080 for 19:9,
+    2288×1287 for 16:9) holding the slides plus an
     accent-field poster before each new section and a closing poster;
+  · on canvases taller than 19:9, an auto-fit (--fit, see scripts/fit.py) that
+    scales each slide's type and figures to use the extra height;
   · the design system applied through the role bridge (ds-layer.css);
   · local images (<img src="img/…">, relative to the source) inlined as
     data: URIs;
@@ -25,12 +29,13 @@ Input: any HTML whose <body> has <section class="diapositiva"
 data-seccion="…"> elements and its own scripts (the minimal source form is in
 references/standalone.md), or a clase-slides lesson (its core is replaced).
 """
-import argparse, base64, html, json, os, re, sys
+import argparse, base64, html, json, math, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(HERE, '..', 'assets')
 sys.path.insert(0, HERE)
 import common as c
+import fit as fitmod
 
 read = lambda p: open(p, encoding='utf-8').read()
 
@@ -166,6 +171,24 @@ def lesson_js(scripts, ui):
     return js
 
 
+def canvas_size(ratio, width, height):
+    """Canvas (w, h) in px from --ratio / --width / --height. Default 19:9 → 2280 × 1080;
+    the stage takes the canvas's own aspect ratio, so canvas and stage always agree."""
+    if width and height:
+        if ratio: print('WARNING: --width and --height given: --ratio %s ignored' % ratio)
+        return width, height
+    try:
+        rw, rh = (int(x) for x in (ratio or '19:9').split(':'))
+        assert rw > 0 and rh > 0
+    except Exception:
+        raise SystemExit('--ratio must look like 16:9')
+    g = math.gcd(rw, rh); rw, rh = rw // g, rh // g
+    if width: return width, round(width * rh / rw)
+    if height: return round(height * rw / rh), height
+    w = math.ceil(2280 / rw) * rw          # smallest width ≥ 2280 with an integer height (19:9 → 2280, 16:9 → 2288)
+    return w, w * rh // rw
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
     ap.add_argument('source', help='lesson source HTML')
@@ -173,7 +196,13 @@ def main():
     ap.add_argument('--ds', default=os.path.join(ASSETS, 'default-ds'),
                     help='design-system folder with styles.css (default: assets/default-ds)')
     ap.add_argument('--lang', choices=sorted(UI), default='en', help='interface language (default: en)')
-    ap.add_argument('--width', type=int, default=2280); ap.add_argument('--height', type=int, default=1080)
+    ap.add_argument('--ratio', default=None, metavar='W:H',
+                    help='aspect ratio of the stage, e.g. 16:9 (default 19:9); sets the canvas size unless --width/--height are given')
+    ap.add_argument('--width', type=int, default=None, help='canvas width in px (default: 2280, adjusted to the ratio)')
+    ap.add_argument('--height', type=int, default=None, help='canvas height in px (default: from the ratio)')
+    ap.add_argument('--fit', choices=['auto', 'on', 'off'], default='auto',
+                    help='per-slide auto-fit of type and figures to the canvas height (auto: on when the canvas is taller than 19:9)')
+    ap.add_argument('--fit-max', type=float, default=None, metavar='K', help='largest auto-fit scale (default: from the canvas)')
     ap.add_argument('--no-posters', action='store_true', help='no section divider slides')
     ap.add_argument('--no-closing', action='store_true', help='no closing slide')
     ap.add_argument('--mathjax', choices=['inline', 'cdn'], default='inline')
@@ -183,6 +212,10 @@ def main():
     g.add_argument('--lesson-credit', action='store_true', help='use the <p class="credito"> of the source')
     a = ap.parse_args()
     ui = UI[a.lang]
+    a.width, a.height = canvas_size(a.ratio, a.width, a.height)
+    fit_on = a.fit == 'on' or (a.fit == 'auto' and fitmod.growth(a.width, a.height) > 1.05)
+    kmax, hk = fitmod.defaults(a.width, a.height)
+    if a.fit_max: kmax = a.fit_max
 
     src = read(a.source)
     ds_css = read(os.path.join(a.ds, 'styles.css'))
@@ -216,6 +249,7 @@ def main():
     css = re.sub(r'rgba\(20,26,36,([.\d]+)\)', lambda m: 'color-mix(in srgb, var(--color-text) %g%%, transparent)' % (float(m.group(1)) * 100), css)
     css = re.sub(r'rgba\(0,0,0,([.\d]+)\)', lambda m: 'color-mix(in srgb, var(--color-text) %g%%, transparent)' % (float(m.group(1)) * 100), css)
     css = re.sub(r'\n\s*\n+', '\n', css).strip()
+    if fit_on: css = fitmod.scale_css(css) + '\n' + fitmod.token_css(t_tokens)
 
     root = ':root{\n  %s\n%s\n}' % (t_tokens, '\n'.join('  %s:%s;' % kv for kv in roles.items()))
     padx = round(a.width * 0.0253); pad = '%dpx %dpx %dpx' % (round(a.height * .06), padx, round(a.height * .07))
@@ -257,6 +291,7 @@ def main():
                    % (html.escape(groups[-1][0], quote=True), html.escape(ui['END']), html.escape(ui['END']),
                       html.escape(title.split('·')[0].strip()), len(foot), ''.join(foot)))
     slides = markup('\n\n'.join(out))
+    if fit_on: slides = fitmod.scale_html(slides)
     pops_html = markup('\n'.join(pops))
     base = os.path.dirname(os.path.abspath(a.source))
     slides, pops_html = inline_images(slides, base), inline_images(pops_html, base)
@@ -278,7 +313,15 @@ def main():
     tok_js = ("function tok(name) {\n  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();\n"
               "  return v || '#201e1d';\n}")
     scale = read(os.path.join(ASSETS, 'scale.js')).replace('%%WIDTH%%', str(a.width))
-    js = '\n\n'.join([tok_js, scale, lesson_js(scripts, ui), 'window.__leccionTypeset();'])
+    les = lesson_js(scripts, ui)
+    parts = [tok_js, scale]
+    if fit_on:
+        les = fitmod.patch_ejes(les)
+        parts += ['window.__HK = %s;   // taller explorer plots on the taller canvas' % hk, les, fitmod.fit_js(ASSETS, kmax)]
+    else:
+        parts += [les]
+    js = '\n\n'.join(parts + ['window.__leccionTypeset();'])
+    if fit_on: print('auto-fit on: canvas %d × %d, slide scale up to %g, explorer plots ×%g' % (a.width, a.height, kmax, hk))
     for t in (css_all, slides, pops_html, mj_cfg):
         if '</script' in t.lower(): raise SystemExit('content contains </script>')
 

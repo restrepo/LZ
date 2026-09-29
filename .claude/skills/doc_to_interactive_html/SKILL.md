@@ -1,6 +1,6 @@
 ---
 name: doc_to_interactive_html
-description: 'Turns a document (a LaTeX paper or notes with main.tex and its \input files, a compiled PDF, slides, or an existing clase-slides lesson) into ONE self-contained interactive HTML lesson: 19:9 slides with step-by-step reveals (↓ ↑), a section menu, full screen, slide counter and progress line, MathJax maths that works offline, pop-up definitions, interactive SVG explorers with sliders, a practice slide with scoring and a glossary, styled by a design system. English interface and no credit line by default. Use it WHENEVER the user asks to make an "interactive HTML", "interactive lesson", "interactive slides", "slides from this paper/LaTeX/PDF", a "single self-contained HTML" or something to publish on GitHub Pages from a document, even without naming the format.'
+description: 'Turns a document (a LaTeX paper or notes with main.tex and its \input files, a compiled PDF, slides, or an existing clase-slides lesson) into ONE self-contained interactive HTML lesson: slides (19:9 by default; 16:9, 16:10, 4:3… with --ratio) with step-by-step reveals (↓ ↑), a section menu, full screen, slide counter and progress line, MathJax maths that works offline, pop-up definitions, interactive SVG explorers with sliders, a practice slide with scoring and a glossary, styled by a design system. English interface and no credit line by default. Use it WHENEVER the user asks to make an "interactive HTML", "interactive lesson", "interactive slides", "slides from this paper/LaTeX/PDF", a "single self-contained HTML" or something to publish on GitHub Pages from a document, even without naming the format.'
 ---
 
 # Document → interactive single-file HTML lesson
@@ -43,22 +43,47 @@ closing slide).
    python <skill>/scripts/build_html.py lesson/source.html --out docs/index.html \
        [--ds path/to/design-system] [--lang en|es] [--credit "…"] [--brand "…"]
    ```
-   Other options: `--width/--height` (canvas, default 2280×1080), `--no-posters`,
-   `--no-closing`, `--mathjax cdn` (link MathJax instead of inlining it, −2.3 MB,
-   needs network), `--lesson-credit` (use the source's `<p class="credito">`).
-   Read and fix any `WARNING:` lines.
+   Other options: `--ratio 16:9` (stage aspect ratio, default 19:9 — see
+   *Aspect ratio* below), `--width/--height` (canvas in px; default 2280×1080),
+   `--fit auto|on|off`, `--no-posters`, `--no-closing`, `--mathjax cdn` (link
+   MathJax instead of inlining it, −2.3 MB, needs network), `--lesson-credit`
+   (use the source's `<p class="credito">`). Read and fix any `WARNING:` lines.
 5. **Verify** (needs `playwright` and Chromium):
    ```bash
    python <skill>/scripts/verify_html.py docs/index.html /tmp/shots
    ```
    It must print `PASS`: no page errors, no MathJax errors, full chrome, no
-   leftover placeholders, the walk reaches the last slide. Then **look at the
-   contact sheets** (`sheetN.png`, all steps revealed) for overflow, clipped
-   text or collisions, and exercise each explorer (sliders, buttons, pop-ups,
-   practice). See `references/verification.md`.
+   leftover placeholders, no layout problems (content below the key-idea line,
+   beyond the canvas, or boxes/formulas spilling sideways), the walk reaches the
+   last slide. The browser window takes the stage's aspect ratio. Then **look at
+   the contact sheets** (`sheetN.png`, all steps revealed) for anything the
+   automatic check cannot judge, and exercise each explorer (sliders, buttons,
+   pop-ups, practice). See `references/verification.md`.
 6. **Deliver** the HTML file. For GitHub Pages, build to `docs/index.html`, add
    an empty `docs/.nojekyll`, and set *Settings → Pages → Deploy from a branch →
    main → /docs*.
+
+## Aspect ratio (16:9 and others)
+
+The default stage is **19:9**. For a 16:9 screen or projector build with
+`--ratio 16:9`: the canvas becomes 2288 × 1287 (same width, taller), the stage
+takes the canvas's own ratio, and no black bars appear. Any `W:H` works
+(`16:10` → 2280 × 1425, `4:3` → 2280 × 1710); `--width/--height` set the canvas
+directly. Lessons are authored for a 2280-px-wide, 1080-px-tall canvas: a canvas
+narrower or shorter than that (ratios wider than 19:9, `--width` below 2280) is
+not adapted — text re-wraps and slides may overflow, which `verify_html.py`
+reports as `layout` problems.
+
+On a taller canvas the slides would end with an empty band, so the build turns
+on the **auto-fit** (`--fit auto`, on whenever the canvas is taller than 19:9;
+`--fit off` disables it, `--fit-max K` caps the scale): each slide grows its
+type, card padding, gaps and figure heights by a factor `--k` (up to ≈ the extra
+height, 1.2 for 16:9), chosen in the browser as the largest one that still fits
+above the key-idea line and keeps formulas and boxes unclipped; the explorers'
+plots (`ejes()`) are made proportionally taller. Author rules: sizes as plain
+`Npx`, one CSS rule per line, `--nofit:1;` inside a rule to keep its sizes fixed
+(big statistics that would wrap), `font-size` *attribute* (not style) in SVG.
+Details in `references/standalone.md`.
 
 ## Design system
 
@@ -88,7 +113,8 @@ content that must stay hidden until its turn (answers, results of a question).
 |---|---|
 | `scripts/build_html.py` | Build the single-file lesson |
 | `scripts/common.py` | Colour roles, TeX clean-up, markup helpers |
-| `scripts/verify_html.py` | Headless check + screenshots/contact sheets |
+| `scripts/fit.py`, `assets/fit.js` | Auto-fit for taller canvases: build-time CSS scaling, run-time per-slide scale |
+| `scripts/verify_html.py` | Headless check (incl. layout) + screenshots/contact sheets |
 | `assets/source-template.html` | Starting point for a lesson source |
 | `assets/template.html`, `chrome.css`, `ds-layer.css`, `core.js`, `scale.js`, `counter.js`, `mathjax-config.js` | Page skeleton, navigation chrome and engine |
 | `assets/mathjax-tex-svg-full.js` | MathJax 3.2.2 (Apache-2.0), inlined in every build |
